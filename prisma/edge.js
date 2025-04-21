@@ -178,7 +178,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/navasnoozy/Desktop/BROCAMP WORKOUT/24/issuetracker/prisma/client",
+      "value": "/Users/navasnoozy/Desktop/BROCAMP WORKOUT/24/issuetracker/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -196,27 +196,26 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../.env",
-    "schemaEnvPath": "../../.env"
+    "rootEnvPath": "../.env",
+    "schemaEnvPath": "../.env"
   },
-  "relativePath": "..",
+  "relativePath": "",
   "clientVersion": "6.6.0",
   "engineVersion": "f676762280b54cd07c770017ed3711ddde35f37a",
   "datasourceNames": [
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "postgresql://navasnoozy:randompassword@localhost:5432/issue-tracker?schema=public"
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Issue {\n  id             String   @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  title          String   @unique @db.VarChar(255)\n  description    String   @db.Text\n  status         Status   @default(OPEN)\n  createdAt      DateTime @default(now())\n  updatedAt      DateTime @updatedAt\n  assignToUserId String?  @db.VarChar(255)\n  assignToUser   User?    @relation(fields: [assignToUserId], references: [id])\n}\n\nenum Status {\n  OPEN\n  IN_PROGRESS\n  CLOSED\n}\n\nmodel User {\n  id             String    @id @default(cuid())\n  name           String?\n  email          String    @unique\n  emailVerified  DateTime?\n  password       String?\n  image          String?\n  accounts       Account[]\n  sessions       Session[]\n  assignedIssues Issue[]\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Account {\n  userId            String\n  type              String\n  provider          String\n  providerAccountId String\n  refresh_token     String?\n  access_token      String?\n  expires_at        Int?\n  token_type        String?\n  scope             String?\n  id_token          String?\n  session_state     String?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@id([provider, providerAccountId])\n}\n\nmodel Session {\n  sessionToken String   @unique\n  userId       String\n  expires      DateTime\n  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel VerificationToken {\n  identifier String\n  token      String\n  expires    DateTime\n\n  @@id([identifier, token])\n}\n",
-  "inlineSchemaHash": "f24104cedb30e9e60f3db1ac7b219374a4f337569fe3de829ef8088f312dc0ea",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Issue {\n  id             String   @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  title          String   @unique @db.VarChar(255)\n  description    String   @db.Text\n  status         Status   @default(OPEN)\n  createdAt      DateTime @default(now())\n  updatedAt      DateTime @updatedAt\n  assignToUserId String?  @db.VarChar(255)\n  assignToUser   User?    @relation(fields: [assignToUserId], references: [id])\n}\n\nenum Status {\n  OPEN\n  IN_PROGRESS\n  CLOSED\n}\n\nmodel User {\n  id             String    @id @default(cuid())\n  name           String?\n  email          String    @unique\n  emailVerified  DateTime?\n  password       String?\n  image          String?\n  accounts       Account[]\n  sessions       Session[]\n  assignedIssues Issue[]\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Account {\n  userId            String\n  type              String\n  provider          String\n  providerAccountId String\n  refresh_token     String?\n  access_token      String?\n  expires_at        Int?\n  token_type        String?\n  scope             String?\n  id_token          String?\n  session_state     String?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@id([provider, providerAccountId])\n}\n\nmodel Session {\n  sessionToken String   @unique\n  userId       String\n  expires      DateTime\n  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel VerificationToken {\n  identifier String\n  token      String\n  expires    DateTime\n\n  @@id([identifier, token])\n}\n",
+  "inlineSchemaHash": "d1ca3f3c908523a19bee61982f331ca55948348c2e02253abe32a09b143b55f1",
   "copyEngine": true
 }
 config.dirname = '/'
