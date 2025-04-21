@@ -8,11 +8,21 @@ import IssueChart from "./dashboard/IssueChart";
 import { Metadata } from "next";
 
 async function Home() {
-  const open = await prisma.issue.count({ where: { status: "OPEN" } });
-  const inProgress = await prisma.issue.count({
-    where: { status: "IN_PROGRESS" },
-  });
-  const closed = await prisma.issue.count({ where: { status: "CLOSED" } });
+  let open = 0;
+  let inProgress = 0;
+  let closed = 0;
+
+  try {
+    [open, inProgress, closed] = await Promise.all([
+      prisma.issue.count({ where: { status: "OPEN" } }),
+      prisma.issue.count({ where: { status: "IN_PROGRESS" } }),
+      prisma.issue.count({ where: { status: "CLOSED" } }),
+    ]);
+  } catch (error) {
+    console.error("Failed to fetch issue counts:", error);
+    // The default 0s will be used
+  }
+  // Fallback to default values if the counts are not available
 
   const statusCount = {
     open: open,
