@@ -44,7 +44,7 @@ const VerifyEmail = ({
         "Missing verification information. Please check your email link."
       );
     }
-  }, [token, userId]); // Only run when token or userId changes
+  }, [token, userId,router]); // Only run when token or userId changes
 
   return (
     <Card className="max-w-md bg-green-200  !space-y-3">
