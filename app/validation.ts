@@ -1,5 +1,5 @@
 // app/validation.ts file
-import { Status } from "@prisma/client";
+import { Status } from "@/prisma/client";
 import { z } from "zod";
 
 export const baseIssueSchema = z.object({

@@ -41,8 +41,8 @@ export async function POST(req: NextRequest) {
   });
 
   
-
-  const url = new URL("http://localhost:3000/auth/verify-Email");
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const url = new URL("/auth/verify-Email", baseUrl);
   url.searchParams.append("token", token);
   url.searchParams.append("userId", id);
   const hmtlContent: string = generateTemplate(existingUser?.name, url);

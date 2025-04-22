@@ -1,7 +1,7 @@
 //app/issues/_components/selectAssignee.tsx
 "use client";
 import useUsers from "@/app/hooks/useUsers";
-import { Issue } from "@prisma/client";
+import { Issue } from "@/prisma/client";
 import { Select } from "@radix-ui/themes";
 import axios from "axios";
 import { useSession } from "next-auth/react";

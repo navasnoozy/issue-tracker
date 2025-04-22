@@ -1,5 +1,7 @@
+export const dynamic = "force-dynamic";
+
 import prisma from '@/lib/prisma'
-import { Issue, Status } from "@prisma/client";
+import { Issue, Status } from "@/prisma/client";
 import { Button, Flex } from "@radix-ui/themes";
 import NextLink from "next/link";
 import Pagination from "../components/Pagination";
@@ -66,4 +68,4 @@ export const metadata : Metadata = {
 
 export default IssuesPage;
 
-export const dynamic = "force-dynamic";
+

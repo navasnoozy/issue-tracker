@@ -3,7 +3,7 @@ import NextLink from "next/link";
 import { FaSort, FaSortDown, FaSortUp } from "react-icons/fa";
 import CustomLink from "../components/CustomLink";
 import StatusBadge from "../components/issueStatusBadge";
-import { Issue, Status } from "@prisma/client";
+import { Issue, Status } from "@/prisma/client";
 import prisma from '@/lib/prisma'
 import { notFound } from "next/navigation";
 

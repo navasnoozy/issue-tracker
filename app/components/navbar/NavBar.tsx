@@ -9,7 +9,7 @@ const NavBar = () => {
   return (
     <Flex
       justify="between"
-      className="w-full border-b border-gray-200 shadow-2xs px-6 h-14"
+      className="w-full border rounded-full border-gray-200 shadow-2xs px-6 h-14"
     >
       <Flex className="!hidden lg:!flex gap-6 items-center">
         <LogoIcon />

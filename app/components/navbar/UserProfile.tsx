@@ -6,7 +6,6 @@ import Link from "next/link";
 
 const UserProfile = () => {
   const { data: session, status } = useSession();
-  console.log(status);
 
   const currentPath = usePathname();
 
