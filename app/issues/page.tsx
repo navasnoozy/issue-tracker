@@ -1,4 +1,4 @@
-import { prisma } from "@/prisma/client";
+import prisma from '@/lib/prisma'
 import { Issue, Status } from "@prisma/client";
 import { Button, Flex } from "@radix-ui/themes";
 import NextLink from "next/link";

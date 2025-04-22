@@ -1,5 +1,5 @@
 import generateTemplate from "@/app/auth/components/verifyEmailTemplate";
-import { prisma } from "@/prisma/client";
+import prisma from '@/lib/prisma'
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";

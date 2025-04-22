@@ -3,7 +3,7 @@
 import { Flex, Grid } from "@radix-ui/themes";
 import IssueSummary from "./dashboard/IssueSummary";
 import LatestIssues from "./dashboard/LatestIssues";
-import { prisma } from "@/prisma/client";
+import prisma from '@/lib/prisma'
 import IssueChart from "./dashboard/IssueChart";
 import { Metadata } from "next";
 

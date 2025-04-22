@@ -1,5 +1,5 @@
 import { signinSchema } from "@/app/validation";
-import { prisma } from "@/prisma/client";
+import prisma from '@/lib/prisma'
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 

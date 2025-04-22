@@ -1,6 +1,6 @@
 //api/users/[id]/route.ts file
 
-import { prisma } from "@/prisma/client";
+import prisma from '@/lib/prisma'
 import { NextRequest, NextResponse } from "next/server";
 
 interface Props {

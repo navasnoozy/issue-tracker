@@ -1,5 +1,5 @@
 // app/ issues/ [id]/edit/page. tsx file
-import { prisma } from "@/prisma/client";
+import prisma from '@/lib/prisma'
 import { notFound } from "next/navigation";
 import DynamicIssueForm from "../../_components/DynamicIssueForm";
 import { Props } from "../page";
