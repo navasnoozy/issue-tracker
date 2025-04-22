@@ -2,7 +2,7 @@
 import { Box, Flex, Grid } from "@radix-ui/themes";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-import { prisma } from "../../../prisma/client";
+import prisma from '@/lib/prisma'
 import AssigneeSelect from "../_components/SelectAssignee";
 import DeleteButton from "./DeleteButton";
 import IssueDetailsPage from "./IssueDetailsPage";

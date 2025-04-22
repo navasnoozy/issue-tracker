@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "../../../prisma/client";
+import prisma from '@/lib/prisma'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 import { baseIssueSchema, patchIssueSchema } from "../../validation";
 import { Issue } from "@prisma/client";
