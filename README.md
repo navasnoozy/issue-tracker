@@ -1,36 +1,182 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Issue Tracker
+
+This is an **Issue Tracker** application built with Next JS, designed to manage and track issues efficiently. It supports user authentication, issue creation, and management with a clean and responsive UI.
+
+## Features
+
+- User authentication with Google, GitHub, and custom credentials.
+- Email verification for new users.
+- Create, edit, and delete issues.
+- Filter, Sorting and paginate issues.
+- Dashboard with issue summaries and charts.
+- Responsive design for mobile and desktop.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js (v16 or later)
+- npm, yarn, pnpm, or bun (choose one package manager)
+- A PostgreSQL database (configured with Prisma)
+- Built in Next JS 15
+- Added Sentry for Error monitoring
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone hgit@github.com:navasnoozy/issue-tracker.git
+   cd issuetracker
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   # or
+   bun install
+   ```
+
+3. Set up environment variables:
+   Create a `.env` file in the root directory and add the following:
+
+   ```env
+   NEXT_PUBLIC_BASE_URL=base url
+   DATABASE_URL=your_database_url
+   GOOGLE_CLIENT_ID=your_google_client_id
+   GOOGLE_CLIENT_SECRET=your_google_client_secret
+   GITHUB_ID=your_github_id
+   GITHUB_SECRET=your_github_secret
+   NEXTAUTH_SECRET=your_nextauth_secret
+   SMTP_MAIL=smtp provider username
+   SMTP_PASSWORD=smtp provider password
+   ```
+
+4. Run database migrations:
+
+   ```bash
+   npx prisma migrate dev
+   ```
+
+5. Start the development server:
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   # or
+   bun dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) in your browser to see the app.
+
+## Folder Structure
+
+Here is the folder structure of the project:
+
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+issuetracker/
+├── .gitignore
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+├── README.md
+├── app/
+│   ├── api/
+│   │   ├── auth/
+│   │   │   └── [...nextauth]/
+│   │   │       └── route.ts
+│   │   ├── issue/
+│   │   │   └── route.ts
+│   │   └── users/
+│   │       ├── [id]/
+│   │       │   └── route.ts
+│   │       └── emailVerification/
+│   │           └── route.ts
+│   ├── auth/
+│   │   ├── components/
+│   │   │   ├── SendMail.tsx
+│   │   │   ├── SigningForm.tsx
+│   │   │   ├── SignupForm.tsx
+│   │   │   ├── VerifyEmail.tsx
+│   │   │   └── verifyEmailTemplate.js
+│   │   ├── AuthProvider.tsx
+│   │   ├── authOptions.ts
+│   │   ├── loading.tsx
+│   │   ├── page.tsx
+│   │   └── verify-Email/
+│   │       └── page.tsx
+│   ├── components/
+│   │   ├── AuthButton.tsx
+│   │   ├── CustomLink.tsx
+│   │   ├── ErrorMessage.tsx
+│   │   ├── Pagination.tsx
+│   │   ├── SelectStatus.tsx
+│   │   ├── SimpleMDETextField.tsx
+│   │   ├── issueStatusBadge.tsx
+│   │   └── navbar/
+│   │       ├── Logoicon.tsx
+│   │       ├── MobileMenu.tsx
+│   │       ├── NavBar.tsx
+│   │       ├── NavLinks.tsx
+│   │       └── UserProfile.tsx
+│   ├── dashboard/
+│   │   ├── IssueChart.tsx
+│   │   ├── IssueSummary.tsx
+│   │   └── LatestIssues.tsx
+│   ├── globals.css
+│   ├── global-error.tsx
+│   ├── hooks/
+│   │   ├── useUsers.ts
+│   │   └── userUser.ts
+│   ├── issues/
+│   │   ├── _components/
+│   │   │   ├── DynamicIssueForm.tsx
+│   │   │   ├── IssueForm.tsx
+│   │   │   ├── IssueFormSkeleton.tsx
+│   │   │   ├── IssueStatusFilter.tsx
+│   │   │   ├── SelectAssignee.tsx
+│   │   └── addnewissue/
+│   │       ├── loading.tsx
+│   │       └── page.tsx
+│   │   ├── [id]/
+│   │       ├── DeleteButton.tsx
+│   │       ├── IssueDetailsPage.tsx
+│   │       ├── edit/
+│   │       │   ├── loading.tsx
+│   │       │   └── page.tsx
+│   │       ├── editButton.tsx
+│   │       ├── loading.tsx
+│   │       └── page.tsx
+│   │   ├── IssueTable.tsx
+├── lib/
+│   └── prisma.ts
+├── prisma/
+│   ├── schema.prisma
+│   └── migrations/
+├── public/
+│   └── favicon.ico
+├── styles/
+│   └── globals.css
+├── .env
+├── next.config.js
+├── package.json
+└── tsconfig.json
+```
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+To learn more about the technologies used in this project, check out the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Next.js Documentation](https://nextjs.org/docs) - Learn about Next.js features and API.
+- [Prisma Documentation](https://www.prisma.io/docs) - Learn about Prisma ORM.
+- [NextAuth.js Documentation](https://next-auth.js.org/getting-started/introduction) - Learn about authentication in Next.js.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployed on Render
