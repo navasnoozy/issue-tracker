@@ -14,6 +14,8 @@ import {
 import React, { useState } from "react";
 import { MdMessage } from "react-icons/md";
 import { IoMdSend } from "react-icons/io";
+import SendMessage from "./SendMessage";
+import Messages from "./Messages";
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,26 +40,8 @@ const ChatWidget = () => {
           
         >
           <Flex direction="column" flexGrow="1" gap="2">
-            <Flex
-              style={{ background: "#FCFCFC" }}
-              className="border border-purple-900 rounded-md"
-              flexGrow="1"
-            >
-              message area
-            </Flex>
-            <Flex align="center" gap="2" width="100%">
-              <TextField.Root
-                style={{ flexGrow: 1 }}
-                placeholder="Enter your message"
-              >
-                <TextField.Slot>
-                  <MdMessage />
-                </TextField.Slot>
-              </TextField.Root>
-              <Button type="submit">
-                <IoMdSend />
-              </Button>
-            </Flex>
+            <Messages />
+          <SendMessage />
           </Flex>
         </Popover.Content>
       </Popover.Root>
