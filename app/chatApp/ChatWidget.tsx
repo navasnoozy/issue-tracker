@@ -9,6 +9,7 @@ import {
   TextArea,
   Text,
   TextField,
+  Card,
 } from "@radix-ui/themes";
 import React, { useState } from "react";
 import { MdMessage } from "react-icons/md";
@@ -29,22 +30,34 @@ const ChatWidget = () => {
             Chat Rooms
           </Button>
         </Popover.Trigger>
-        <Popover.Content width="360px" >
-          <Flex gap="3">
-            <Box flexGrow="1">
-              <Flex gap="3" mt="3" justify="between">
-                <Flex align="center" gap="2" width='100%'>
-                  <TextField.Root style={{flexGrow:'1'}}  placeholder="Enter you message">
-                    <TextField.Slot>
-                      <MdMessage />
-                    </TextField.Slot>
-                  </TextField.Root>
-                  <Button type="submit">
-                    <IoMdSend />
-                  </Button>
-                </Flex>
-              </Flex>
-            </Box>
+
+        <Popover.Content
+          width="360px"
+          minHeight="50vh"
+          style={{ display: "flex" }}
+          
+        >
+          <Flex direction="column" flexGrow="1" gap="2">
+            <Flex
+              style={{ background: "#FCFCFC" }}
+              className="border border-purple-900 rounded-md"
+              flexGrow="1"
+            >
+              message area
+            </Flex>
+            <Flex align="center" gap="2" width="100%">
+              <TextField.Root
+                style={{ flexGrow: 1 }}
+                placeholder="Enter your message"
+              >
+                <TextField.Slot>
+                  <MdMessage />
+                </TextField.Slot>
+              </TextField.Root>
+              <Button type="submit">
+                <IoMdSend />
+              </Button>
+            </Flex>
           </Flex>
         </Popover.Content>
       </Popover.Root>
