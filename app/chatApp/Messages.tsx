@@ -1,4 +1,4 @@
-import { Box, Flex } from "@radix-ui/themes";
+import { Avatar, Box, Flex } from "@radix-ui/themes";
 import { useState } from "react";
 
 interface messageType {
@@ -33,7 +33,7 @@ const Messages = () => {
   const style = {
     my: {
       justify: "end",
-      className: ["bg-green-500 text-white rounded-lg py-1 px-4"],
+      className: [" bg-green-500 text-white rounded-lg py-1 px-4"],
     },
     others: {
       justify: "start",
@@ -55,10 +55,16 @@ const Messages = () => {
       direction="column"
     >
       {messages.map((msg) => (
-        <Flex className={`!justify-${style[msg.type]?.justify}`}>
-          <Box className={` ${style[msg.type]?.className}`}>
+        <Flex
+          gap="2"
+          className={`!justify-${style[msg.type]?.justify} items-center`}
+        >
+          {msg.type === "others" && (
+            <Avatar size="2" radius="full" fallback="A" />
+          )}
+          <Flex className={` ${style[msg.type]?.className}`}>
             {msg.content}
-          </Box>
+          </Flex>
         </Flex>
       ))}
     </Flex>
