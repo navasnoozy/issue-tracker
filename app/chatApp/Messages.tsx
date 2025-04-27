@@ -32,15 +32,15 @@ const Messages = () => {
 
   const style = {
     my: {
-      justify: "end",
+      justify: "!justify-end",
       className: [" bg-green-500 text-white rounded-lg py-1 px-4"],
     },
     others: {
-      justify: "start",
+      justify: "!jusitfy-start",
       className: ["bg-blue-500 text-white rounded-lg py-1 px-4"],
     },
     notifi: {
-      justify: "center",
+      justify: "!justify-center",
       className: ["text-sm text-gray-500"],
     },
   };
@@ -56,15 +56,16 @@ const Messages = () => {
     >
       {messages.map((msg) => (
         <Flex
+        key={msg.id}
           gap="2"
-          className={`!justify-${style[msg.type]?.justify} items-center`}
+          className={`${style[msg.type]?.justify} items-center`}
         >
           {msg.type === "others" && (
             <Avatar size="2" radius="full" fallback="A" />
           )}
-          <Flex className={` ${style[msg.type]?.className}`}>
+          <Box className={`${style[msg.type]?.className}`}>
             {msg.content}
-          </Flex>
+          </Box>
         </Flex>
       ))}
     </Flex>

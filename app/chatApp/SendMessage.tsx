@@ -1,15 +1,25 @@
 import { Flex, TextField, Button } from '@radix-ui/themes'
 import { IoMdSend } from 'react-icons/io'
 import { MdMessage } from 'react-icons/md'
+import { useForm } from 'react-hook-form'
 
 const SendMessage = () => {
+  const {register, handleSubmit} = useForm();
+
+  const OnSubmit = handleSubmit ((data)=>{
+          
+  })
+
+  
+
   return (
+    <form onSubmit={OnSubmit}>
     <Flex align="center" gap="2" width="100%">
     <TextField.Root
       style={{ flexGrow: 1 }}
       placeholder="Enter your message"
     >
-      <TextField.Slot>
+      <TextField.Slot {...register('message')}>
         <MdMessage />
       </TextField.Slot>
     </TextField.Root>
@@ -17,6 +27,7 @@ const SendMessage = () => {
       <IoMdSend />
     </Button>
   </Flex>
+  </form>
   )
 }
 
