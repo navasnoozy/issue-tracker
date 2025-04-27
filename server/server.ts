@@ -3,6 +3,7 @@
 import { createServer } from "node:http";
 import next from "next";
 import { Server } from "socket.io";
+import { setUpSocketServer } from "./socket";
 
 const dev = process.env.NODE_ENV !== "production";
 const port = parseInt(process.env.PORT || "3000", 10);
@@ -13,19 +14,19 @@ const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
 
 app.prepare().then(() => {
+
+  //creating custom http server
   const httpServer = createServer(handler);
 
-  const io = new Server(httpServer);
+  //Create socketIO server
+  setUpSocketServer(httpServer);
 
-  io.on("connection", (socket) => {
-    console.log(`User ${socket.id} connection established`);
-  });
-
-  httpServer.once("error", (err) => {
-    console.error(err);
-    process.exit(1);
-  }).listen(port,()=>{
-    console.log(`> Ready on http://${hostname}:${port}`);
-    
-  })
+  httpServer
+    .once("error", (err) => {
+      console.error(err);
+      process.exit(1);
+    })
+    .listen(port, () => {
+      console.log(`> Ready on http://${hostname}:${port}`);
+    });
 });
