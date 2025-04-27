@@ -4,16 +4,14 @@ import { MdMessage } from 'react-icons/md'
 import { useForm } from 'react-hook-form'
 
 const SendMessage = () => {
-  const {register, handleSubmit} = useForm();
+  const {register} = useForm();
 
-  const OnSubmit = handleSubmit ((data)=>{
-          
-  })
+  
 
   
 
   return (
-    <form onSubmit={OnSubmit}>
+    <form >
     <Flex align="center" gap="2" width="100%">
     <TextField.Root
       style={{ flexGrow: 1 }}

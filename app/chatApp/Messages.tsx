@@ -9,7 +9,7 @@ interface messageType {
 }
 
 const Messages = () => {
-  const [messages, setMessages] = useState<messageType[]>([
+  const [messages] = useState<messageType[]>([
     {
       id: crypto.randomUUID(),
       username: "John",

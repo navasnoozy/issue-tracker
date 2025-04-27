@@ -1,24 +1,15 @@
 "use client";
 import {
-  Avatar,
   Box,
   Button,
-  Checkbox,
   Flex,
-  Popover,
-  TextArea,
-  Text,
-  TextField,
-  Card,
+  Popover
 } from "@radix-ui/themes";
-import React, { useState } from "react";
-import { MdMessage } from "react-icons/md";
-import { IoMdSend } from "react-icons/io";
-import SendMessage from "./SendMessage";
 import Messages from "./Messages";
+import SendMessage from "./SendMessage";
 
 const ChatWidget = () => {
-  const [isOpen, setIsOpen] = useState(false);
+
 
   return (
     <Box
@@ -37,11 +28,10 @@ const ChatWidget = () => {
           width="360px"
           minHeight="50vh"
           style={{ display: "flex" }}
-          
         >
           <Flex direction="column" flexGrow="1" gap="2">
             <Messages />
-          <SendMessage />
+            <SendMessage />
           </Flex>
         </Popover.Content>
       </Popover.Root>
