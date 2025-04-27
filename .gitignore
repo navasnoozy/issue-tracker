@@ -45,3 +45,6 @@ next-env.d.ts
 
 # Server file dist folder
 /dist
+
+deleteTest.ts
+test.js

@@ -1,15 +1,27 @@
 "use client";
-import {
-  Box,
-  Button,
-  Flex,
-  Popover
-} from "@radix-ui/themes";
+import { Box, Button, Flex, Popover } from "@radix-ui/themes";
 import Messages from "./Messages";
 import SendMessage from "./SendMessage";
+import { useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
+import CreateRoomForm from "./CreateRoomForm";
 
 const ChatWidget = () => {
+  const [isOpen, setIsOpen] = useState(true);
+  const [CreateRoom, setCreateRoom] = useState(false);
 
+  const handleTongle = (open: boolean) => {
+    setIsOpen(open);
+  };
+
+  //   useEffect (()=>{
+  //     const socketInstance:Socket = io();
+
+  //     socketInstance.on('connection',()=>{
+  //       console.log('Connected to socket server');
+  //     })
+
+  // },[isOpen])
 
   return (
     <Box
@@ -17,7 +29,7 @@ const ChatWidget = () => {
       bottom="4" // 1rem = 16px (Tailwind scale: 4 = 16px)
       right="4"
     >
-      <Popover.Root open>
+      <Popover.Root open={isOpen} onOpenChange={(open) => handleTongle(open)}>
         <Popover.Trigger>
           <Button className="!rounded-full" size={{ initial: "3", md: "4" }}>
             Chat Rooms
@@ -30,7 +42,27 @@ const ChatWidget = () => {
           style={{ display: "flex" }}
         >
           <Flex direction="column" flexGrow="1" gap="2">
-            <Messages />
+            <Flex justify={"end"}>
+              <Button
+                size="1"
+                variant="ghost"
+                onClick={() => setCreateRoom(true)}
+              >
+                Create New Room
+              </Button>
+            </Flex>
+            <Flex
+              style={{ background: "#FCFCFC" }}
+              className="border border-purple-100 rounded-md"
+              flexGrow="1"
+              p="3"
+              gap="2"
+              direction="column"
+            >
+              <CreateRoomForm />
+              <Messages />
+
+            </Flex>
             <SendMessage />
           </Flex>
         </Popover.Content>

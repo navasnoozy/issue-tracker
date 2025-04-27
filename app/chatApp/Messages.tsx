@@ -46,29 +46,20 @@ const Messages = () => {
   };
 
   return (
-    <Flex
-      style={{ background: "#FCFCFC" }}
-      className="border border-purple-100 rounded-md"
-      flexGrow="1"
-      p="3"
-      gap="2"
-      direction="column"
-    >
+    <>
       {messages.map((msg) => (
         <Flex
-        key={msg.id}
+          key={msg.id}
           gap="2"
           className={`${style[msg.type]?.justify} items-center`}
         >
           {msg.type === "others" && (
             <Avatar size="2" radius="full" fallback="A" />
           )}
-          <Box className={`${style[msg.type]?.className}`}>
-            {msg.content}
-          </Box>
+          <Box className={`${style[msg.type]?.className}`}>{msg.content}</Box>
         </Flex>
       ))}
-    </Flex>
+    </>
   );
 };
 
