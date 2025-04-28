@@ -1,14 +1,13 @@
 "use client";
 import { Box, Button, Flex, Popover } from "@radix-ui/themes";
+import { useState } from "react";
+import CreateRoomForm from "./CreateRoomForm";
 import Messages from "./Messages";
 import SendMessage from "./SendMessage";
-import { useEffect, useState } from "react";
-import { io, Socket } from "socket.io-client";
-import CreateRoomForm from "./CreateRoomForm";
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [CreateRoom, setCreateRoom] = useState(false);
+  const [createRoom, setCreateRoom] = useState(false);
 
   const handleTongle = (open: boolean) => {
     setIsOpen(open);
@@ -46,9 +45,9 @@ const ChatWidget = () => {
               <Button
                 size="1"
                 variant="ghost"
-                onClick={() => setCreateRoom(true)}
+                onClick={() => setCreateRoom(!createRoom)}
               >
-                Create New Room
+                {createRoom ? "Room List" : "Create New Room"}
               </Button>
             </Flex>
             <Flex
@@ -59,9 +58,7 @@ const ChatWidget = () => {
               gap="2"
               direction="column"
             >
-              <CreateRoomForm />
-              <Messages />
-
+              {createRoom ? <CreateRoomForm /> : <Messages />}
             </Flex>
             <SendMessage />
           </Flex>
