@@ -1,3 +1,4 @@
+//app/chatApp/Message.tsx file
 "use client";
 import getSocket from "@/lib/socket";
 import { Avatar, Box, Flex } from "@radix-ui/themes";
@@ -21,11 +22,22 @@ export interface MessageType {
 const Messages = ({ isConnected }: Props) => {
   const [messages, setMessages] = useState<MessageType[]>(dummyMessages);
 
-  let socket = getSocket(isConnected);
+  useEffect (()=>{
+    console.log('message use effect');
+    
+    const socket = getSocket(isConnected);
 
-  socket?.on("roomMessage", (message: MessageType) => {
-    console.log(message);
-  });
+    const handleRoomMessage = (message:MessageType)=>{
+          console.log('mess',message);
+          setMessages(prev=>[...prev,message]);
+    };
+
+    socket?.on('roomMessage',handleRoomMessage);
+
+    return () => {
+      socket?.off("roomMessage", handleRoomMessage);
+    };
+  },[isConnected])
 
   return (
     <>
@@ -50,15 +62,15 @@ export default Messages;
 const style = {
   self: {
     justify: "!justify-end",
-    className: [" bg-green-500 text-white rounded-lg py-1 px-4"],
+    className: "bg-green-500 text-white rounded-lg py-1 px-4",
   },
   broadcast: {
-    justify: "!jusitfy-start",
-    className: ["bg-blue-500 text-white rounded-lg py-1 px-4"],
+    justify: "!justfy-start",
+    className: "bg-blue-500 text-white rounded-lg py-1 px-4",
   },
   notifi: {
     justify: "!justify-center",
-    className: ["text-sm text-gray-500"],
+    className: "text-sm text-gray-500",
   },
 };
 

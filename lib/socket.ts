@@ -1,3 +1,4 @@
+//lib/socket.ts file 
 "use client";
 
 import { io,  Socket  } from "socket.io-client";

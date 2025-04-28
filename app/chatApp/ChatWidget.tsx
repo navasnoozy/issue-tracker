@@ -1,4 +1,4 @@
-//ChatWidget.tsx file
+//app/chatApp/ChatWidget.tsx file
 "use client";
 import { Box, Button, Flex, Popover } from "@radix-ui/themes";
 import { useEffect, useRef, useState } from "react";
@@ -7,7 +7,6 @@ import Messages from "./Messages";
 import SendMessage from "./SendMessage";
 import getSocket from "@/lib/socket";
 import { CgCloseR } from "react-icons/cg";
-import { Socket } from "socket.io-client";
 import { useSession } from "next-auth/react";
 
 const ChatWidget = () => {
@@ -15,18 +14,13 @@ const ChatWidget = () => {
   const [createRoom, setCreateRoom] = useState(false);
   const [InRoom, setInRoom] = useState("");
   const isConnected = useRef(false);
-
   const { status } = useSession();
-
-
 
   const handleTongle = (open: boolean) => {
     setIsOpen(open);
   };
 
   useEffect(() => {
-    console.log("use effect running");
-
     if (isOpen) {
       let socket = getSocket(isConnected.current);
       socket?.on("connect", () => {
@@ -41,13 +35,10 @@ const ChatWidget = () => {
     }
   }, [isOpen]);
 
+  //If user not loged in
   if (status === "unauthenticated") {
     return (
-      <Box
-        position="fixed"
-        bottom="4"
-        right="4"
-      >
+      <Box position="fixed" bottom="4" right="4">
         <Popover.Root>
           <Popover.Trigger>
             <Button className="!rounded-full" size={{ initial: "3", md: "4" }}>
@@ -58,13 +49,20 @@ const ChatWidget = () => {
           <Popover.Content
             width="360px"
             minHeight="50vh"
-            style={{ display: "flex", justifyContent:'center', alignItems:'center' }}
-          >Login first to access chat Rooms</Popover.Content>
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            Login first to access chat Rooms
+          </Popover.Content>
         </Popover.Root>
       </Box>
     );
   }
 
+  // if user loged in
   return (
     <Box
       position="fixed"

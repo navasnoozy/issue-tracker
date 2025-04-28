@@ -1,10 +1,10 @@
-//socket.ts
+//server/socket.ts
 import { Server } from "socket.io";
 
 export interface MessageType {
   id: string;
   time: string;
-  type:'broadcast' | 'notifi' | 'self'
+  type: "broadcast" | "notifi" | "self";
   content: string | number;
   user: {
     name: string;
@@ -12,7 +12,11 @@ export interface MessageType {
   };
 }
 
-const createMessage = (name: string,type:'broadcast' | 'notifi' | 'self', content: string) => {
+const createMessage = (
+  name: string,
+  type: "broadcast" | "notifi" | "self",
+  content: string
+) => {
   const timestamp = Date.now();
   const date = new Date(timestamp);
   const options: Intl.DateTimeFormatOptions = {
@@ -25,7 +29,7 @@ const createMessage = (name: string,type:'broadcast' | 'notifi' | 'self', conten
   const message: MessageType = {
     id: crypto.randomUUID(),
     time: formattedTime,
-    type:type,
+    type: type,
     content: content,
     user: {
       name: name,
@@ -34,15 +38,13 @@ const createMessage = (name: string,type:'broadcast' | 'notifi' | 'self', conten
   return message;
 };
 
-
 export function setUpSocketServer(httpServer) {
   const io = new Server(httpServer, {
     cors: {
       origin: "*",
     },
   });
-  
-  
+
   io.on("connect", (socket) => {
     console.log(`User ${socket.id} connection established`);
 
@@ -50,16 +52,23 @@ export function setUpSocketServer(httpServer) {
       "createRoom",
       ({ roomname, name }: { roomname: string; name: string }) => {
         socket.join(roomname);
-        const message = createMessage(name,'self', `${name} Welcome to ${roomname}`);
-        socket.to(roomname).emit('roomMessage', message)
+
+        //Welcome message to the sender
+        const welcomeMessage = createMessage(
+          name,
+          "notifi",
+          `${name}! Welcome to ${roomname}`
+        );
+        socket.emit("roomMessage", welcomeMessage);
+
+        //notification to other user
+        const notifi = createMessage(name, "notifi", `${name} has joined`);
+        socket.to(roomname).emit("roomMessage", notifi);
       }
     );
 
-    socket.on('disconnect',(reason)=>{
-          console.log(`User ${socket.id} disconnected`);
-          
-          
-    })
-    
+    socket.on("disconnect", (reason) => {
+      console.log(`User ${socket.id} disconnected`);
+    });
   });
 }
