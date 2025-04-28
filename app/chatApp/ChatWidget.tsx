@@ -1,34 +1,38 @@
 //ChatWidget.tsx file
 "use client";
 import { Box, Button, Flex, Popover } from "@radix-ui/themes";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CreateRoomForm from "./CreateRoomForm";
 import Messages from "./Messages";
 import SendMessage from "./SendMessage";
 import getSocket from "@/lib/socket";
+import { CgCloseR } from "react-icons/cg";
 import { Socket } from "socket.io-client";
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [createRoom, setCreateRoom] = useState(false);
 
-  let isConnected = false;
+  const isConnectedRef = useRef(false);
+
   let socket;
   const handleTongle = (open: boolean) => {
     setIsOpen(open);
   };
 
   useEffect(() => {
+    console.log("use effect running");
+
     if (isOpen) {
-      socket = getSocket(isConnected);
+      socket = getSocket(isConnectedRef.current);
       socket.on("connect", () => {
         console.log(`User ${socket.id} is connected`);
-        isConnected = true;
+        isConnectedRef.current = true;
       });
 
       return () => {
         socket.disconnect();
-        isConnected = false;
+        isConnectedRef.current = false;
       };
     }
   }, [isOpen]);
@@ -52,7 +56,7 @@ const ChatWidget = () => {
           style={{ display: "flex" }}
         >
           <Flex direction="column" flexGrow="1" gap="2">
-            <Flex justify={"end"}>
+            <Flex justify={"between"}>
               <Button
                 size="1"
                 variant="ghost"
@@ -60,6 +64,7 @@ const ChatWidget = () => {
               >
                 {createRoom ? "Room List" : "Create New Room"}
               </Button>
+              <CgCloseR className="text-purple-900" />
             </Flex>
             <Flex
               style={{ background: "#FCFCFC" }}
@@ -69,7 +74,7 @@ const ChatWidget = () => {
               gap="2"
               direction="column"
             >
-              {createRoom && <CreateRoomForm />}
+              {createRoom && <CreateRoomForm socket={socket} />}
             </Flex>
             <SendMessage />
           </Flex>

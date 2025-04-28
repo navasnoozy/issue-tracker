@@ -5,15 +5,7 @@ import { useEffect, useState } from "react";
 const Messages = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
 
-  useEffect(() => {
-    socket.on("roomJoined", ({ roomname, message }) => {
-      setMessages((prev) => [...prev, message]);
-    });
-
-    return () => {
-      socket.off("roomJoined");
-    };
-  });
+ 
 
   return (
     <>

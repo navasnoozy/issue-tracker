@@ -40,7 +40,8 @@ export function setUpSocketServer(httpServer) {
       origin: "*",
     },
   });
-
+  
+  
   io.on("connect", (socket) => {
     console.log(`User ${socket.id} connection established`);
 

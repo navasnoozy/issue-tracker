@@ -3,8 +3,9 @@ import getSocket from "@/lib/socket";
 import { Button, Card, Flex, TextField } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
+import { Socket } from "socket.io-client";
 
-const CreateRoomForm = () => {
+const CreateRoomForm = ({socket}:{socket:Socket}) => {
   const { register, handleSubmit } = useForm();
   const { data, status } = useSession();
 
@@ -12,7 +13,7 @@ const CreateRoomForm = () => {
     <Card>no access</Card>;
   }
 
-  let socket = getSocket()
+  
   const name = data?.user?.name || socket.id?.substring(0, 5);
 
   const submit = handleSubmit(({ roomname }) => {
