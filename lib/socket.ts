@@ -1,8 +1,9 @@
 "use client";
-import { io } from "socket.io-client";
+
+import { io,  Socket  } from "socket.io-client";
 
 
-let socket = null;
+let socket: Socket | null = null;
 
 const getSocket = (isConnected = false) => {
   // Only create a new socket if one doesn't already exist

@@ -12,10 +12,11 @@ import { Socket } from "socket.io-client";
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [createRoom, setCreateRoom] = useState(false);
+  const [ InRoom, setInRoom] = useState('')
 
   const isConnectedRef = useRef(false);
 
-  let socket;
+
   const handleTongle = (open: boolean) => {
     setIsOpen(open);
   };
@@ -24,14 +25,14 @@ const ChatWidget = () => {
     console.log("use effect running");
 
     if (isOpen) {
-      socket = getSocket(isConnectedRef.current);
-      socket.on("connect", () => {
+    let  socket = getSocket(isConnectedRef.current);
+      socket?.on("connect", () => {
         console.log(`User ${socket.id} is connected`);
         isConnectedRef.current = true;
       });
 
       return () => {
-        socket.disconnect();
+        socket?.disconnect();
         isConnectedRef.current = false;
       };
     }
@@ -74,9 +75,11 @@ const ChatWidget = () => {
               gap="2"
               direction="column"
             >
-              {createRoom && <CreateRoomForm socket={socket} />}
+              {createRoom &&
+               <CreateRoomForm  isConnected={isConnectedRef.current} />}
+              {}
             </Flex>
-            <SendMessage />
+            {InRoom && <SendMessage />}
           </Flex>
         </Popover.Content>
       </Popover.Root>

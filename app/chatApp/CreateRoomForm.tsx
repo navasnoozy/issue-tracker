@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { Socket } from "socket.io-client";
 
-const CreateRoomForm = ({socket}:{socket:Socket}) => {
+const CreateRoomForm = ({isConnected}:{isConnected:boolean}) => {
   const { register, handleSubmit } = useForm();
   const { data, status } = useSession();
 
@@ -13,12 +13,12 @@ const CreateRoomForm = ({socket}:{socket:Socket}) => {
     <Card>no access</Card>;
   }
 
-  
-  const name = data?.user?.name || socket.id?.substring(0, 5);
+  let socket = getSocket(isConnected)
+  const name = data?.user?.name || socket?.id?.substring(0, 5);
 
   const submit = handleSubmit(({ roomname }) => {
  
-    socket.emit("createRoom", { roomname, name });
+    socket?.emit("createRoom", { roomname, name });
   });
 
   return (
