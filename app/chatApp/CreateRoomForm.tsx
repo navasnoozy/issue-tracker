@@ -1,21 +1,23 @@
 "use client";
+import getSocket from "@/lib/socket";
 import { Button, Card, Flex, TextField } from "@radix-ui/themes";
-import { useForm } from "react-hook-form";
-import { socket } from "@/lib/socket";
 import { useSession } from "next-auth/react";
+import { useForm } from "react-hook-form";
 
 const CreateRoomForm = () => {
   const { register, handleSubmit } = useForm();
-  const  {data,status} = useSession();
+  const { data, status } = useSession();
 
-  if (status === 'unauthenticated') {
-    <Card>no access</Card>
+  if (status === "unauthenticated") {
+    <Card>no access</Card>;
   }
 
-  const name = data?.user?.name || socket.id?.substring(0,5)
+  let socket = getSocket()
+  const name = data?.user?.name || socket.id?.substring(0, 5);
 
   const submit = handleSubmit(({ roomname }) => {
-    socket.emit("createRoom", { roomname , name});
+ 
+    socket.emit("createRoom", { roomname, name });
   });
 
   return (

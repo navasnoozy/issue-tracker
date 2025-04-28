@@ -1,26 +1,37 @@
+//ChatWidget.tsx file
 "use client";
 import { Box, Button, Flex, Popover } from "@radix-ui/themes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateRoomForm from "./CreateRoomForm";
 import Messages from "./Messages";
 import SendMessage from "./SendMessage";
+import getSocket from "@/lib/socket";
+import { Socket } from "socket.io-client";
 
 const ChatWidget = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [createRoom, setCreateRoom] = useState(false);
 
+  let isConnected = false;
+  let socket;
   const handleTongle = (open: boolean) => {
     setIsOpen(open);
   };
 
-  //   useEffect (()=>{
-  //     const socketInstance:Socket = io();
+  useEffect(() => {
+    if (isOpen) {
+      socket = getSocket(isConnected);
+      socket.on("connect", () => {
+        console.log(`User ${socket.id} is connected`);
+        isConnected = true;
+      });
 
-  //     socketInstance.on('connection',()=>{
-  //       console.log('Connected to socket server');
-  //     })
-
-  // },[isOpen])
+      return () => {
+        socket.disconnect();
+        isConnected = false;
+      };
+    }
+  }, [isOpen]);
 
   return (
     <Box
@@ -58,7 +69,7 @@ const ChatWidget = () => {
               gap="2"
               direction="column"
             >
-              {createRoom ? <CreateRoomForm /> : <Messages />}
+              {createRoom && <CreateRoomForm />}
             </Flex>
             <SendMessage />
           </Flex>
