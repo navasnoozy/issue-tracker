@@ -1,3 +1,4 @@
+//socket.ts
 import { Server } from "socket.io";
 
 export interface MessageType {
@@ -50,7 +51,7 @@ export function setUpSocketServer(httpServer) {
       ({ roomname, name }: { roomname: string; name: string }) => {
         socket.join(roomname);
         const message = createMessage(name,'self', `${name} Welcome to ${roomname}`);
-        socket.emit("roomJoined", { roomname, message });
+        socket.to(roomname).emit('roomMessage', message)
       }
     );
 

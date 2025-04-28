@@ -3,7 +3,6 @@ import getSocket from "@/lib/socket";
 import { Button, Card, Flex, TextField } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
-import { Socket } from "socket.io-client";
 
 interface Props {
   isConnected: boolean;
@@ -13,11 +12,9 @@ interface Props {
 
 const CreateRoomForm = ({ isConnected, setInRoom,setCreateRoom }: Props) => {
   const { register, handleSubmit } = useForm();
-  const { data, status } = useSession();
+  const { data } = useSession();
 
-  if (status === "unauthenticated") {
-    <Card>no access</Card>;
-  }
+  
 
   let socket = getSocket(isConnected);
   const name = data?.user?.name || socket?.id?.substring(0, 5);

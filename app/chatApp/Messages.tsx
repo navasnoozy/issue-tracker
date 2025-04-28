@@ -1,11 +1,31 @@
-import { MessageType } from "@/server/socket";
+"use client";
+import getSocket from "@/lib/socket";
 import { Avatar, Box, Flex } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 
-const Messages = () => {
-  const [messages, setMessages] = useState<MessageType[]>([]);
+interface Props {
+  isConnected: boolean;
+}
 
- 
+export interface MessageType {
+  id: string;
+  time: string;
+  type: "broadcast" | "notifi" | "self";
+  content: string | number;
+  user?: {
+    name?: string;
+    avatar?: string;
+  };
+}
+
+const Messages = ({ isConnected }: Props) => {
+  const [messages, setMessages] = useState<MessageType[]>(dummyMessages);
+
+  let socket = getSocket(isConnected);
+
+  socket?.on("roomMessage", (message: MessageType) => {
+    console.log(message);
+  });
 
   return (
     <>
@@ -28,11 +48,11 @@ const Messages = () => {
 export default Messages;
 
 const style = {
-  my: {
+  self: {
     justify: "!justify-end",
     className: [" bg-green-500 text-white rounded-lg py-1 px-4"],
   },
-  others: {
+  broadcast: {
     justify: "!jusitfy-start",
     className: ["bg-blue-500 text-white rounded-lg py-1 px-4"],
   },
@@ -41,3 +61,30 @@ const style = {
     className: ["text-sm text-gray-500"],
   },
 };
+
+const dummyMessages: MessageType[] = [
+  {
+    id: crypto.randomUUID(),
+    time: "12:00 pm",
+    type: "broadcast",
+    content: "hi",
+    user: {
+      name: "navas",
+    },
+  },
+  {
+    id: crypto.randomUUID(),
+    time: "12:00 pm",
+    type: "self",
+    content: "poda",
+    user: {
+      name: "ghadhar",
+    },
+  },
+  {
+    id: crypto.randomUUID(),
+    time: "12:00 pm",
+    type: "notifi",
+    content: "john joined"
+  },
+]

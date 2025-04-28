@@ -8,13 +8,17 @@ import SendMessage from "./SendMessage";
 import getSocket from "@/lib/socket";
 import { CgCloseR } from "react-icons/cg";
 import { Socket } from "socket.io-client";
+import { useSession } from "next-auth/react";
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [createRoom, setCreateRoom] = useState(false);
   const [InRoom, setInRoom] = useState("");
+  const isConnected = useRef(false);
 
-  const isConnectedRef = useRef(false);
+  const { status } = useSession();
+
+
 
   const handleTongle = (open: boolean) => {
     setIsOpen(open);
@@ -24,18 +28,42 @@ const ChatWidget = () => {
     console.log("use effect running");
 
     if (isOpen) {
-      let socket = getSocket(isConnectedRef.current);
+      let socket = getSocket(isConnected.current);
       socket?.on("connect", () => {
         console.log(`User ${socket.id} is connected`);
-        isConnectedRef.current = true;
+        isConnected.current = true;
       });
 
       return () => {
         socket?.disconnect();
-        isConnectedRef.current = false;
+        isConnected.current = false;
       };
     }
   }, [isOpen]);
+
+  if (status === "unauthenticated") {
+    return (
+      <Box
+        position="fixed"
+        bottom="4"
+        right="4"
+      >
+        <Popover.Root>
+          <Popover.Trigger>
+            <Button className="!rounded-full" size={{ initial: "3", md: "4" }}>
+              Chat Rooms
+            </Button>
+          </Popover.Trigger>
+
+          <Popover.Content
+            width="360px"
+            minHeight="50vh"
+            style={{ display: "flex", justifyContent:'center', alignItems:'center' }}
+          >Login first to access chat Rooms</Popover.Content>
+        </Popover.Root>
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -78,10 +106,10 @@ const ChatWidget = () => {
                 <CreateRoomForm
                   setInRoom={setInRoom}
                   setCreateRoom={setCreateRoom}
-                  isConnected={isConnectedRef.current}
+                  isConnected={isConnected.current}
                 />
               )}
-              {}
+              {InRoom && <Messages isConnected={isConnected.current} />}
             </Flex>
             {InRoom && <SendMessage />}
           </Flex>
