@@ -12,10 +12,9 @@ import { Socket } from "socket.io-client";
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [createRoom, setCreateRoom] = useState(false);
-  const [ InRoom, setInRoom] = useState('')
+  const [InRoom, setInRoom] = useState("");
 
   const isConnectedRef = useRef(false);
-
 
   const handleTongle = (open: boolean) => {
     setIsOpen(open);
@@ -25,7 +24,7 @@ const ChatWidget = () => {
     console.log("use effect running");
 
     if (isOpen) {
-    let  socket = getSocket(isConnectedRef.current);
+      let socket = getSocket(isConnectedRef.current);
       socket?.on("connect", () => {
         console.log(`User ${socket.id} is connected`);
         isConnectedRef.current = true;
@@ -75,8 +74,13 @@ const ChatWidget = () => {
               gap="2"
               direction="column"
             >
-              {createRoom &&
-               <CreateRoomForm  isConnected={isConnectedRef.current} />}
+              {createRoom && (
+                <CreateRoomForm
+                  setInRoom={setInRoom}
+                  setCreateRoom={setCreateRoom}
+                  isConnected={isConnectedRef.current}
+                />
+              )}
               {}
             </Flex>
             {InRoom && <SendMessage />}
