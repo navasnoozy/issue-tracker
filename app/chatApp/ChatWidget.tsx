@@ -8,7 +8,7 @@ import SendMessage from "./SendMessage";
 import getSocket from "@/lib/socket";
 import { CgCloseR } from "react-icons/cg";
 import { useSession } from "next-auth/react";
-
+import ChatRooms from "./ChatRooms";
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -93,26 +93,35 @@ const ChatWidget = () => {
               </Button>
               <CgCloseR className="text-purple-900" />
             </Flex>
-            <ScrollArea type="auto"  scrollbars="vertical" style={{ height: '60vh' }} >
-            <Flex
-              style={{ background: "#FCFCFC" }}
-              className="border border-purple-100 rounded-md"
-              flexGrow="1"
-              p="3"
-              gap="2"
-              direction="column"
-              height={'100%'}
+            <ScrollArea
+              type="auto"
+              scrollbars="vertical"
+              style={{ height: "60vh" }}
             >
-              {createRoom && (
-                <CreateRoomForm
-                  setRoomName={setRoomName}
-                  setCreateRoom={setCreateRoom}
-                  isConnected={isConnected.current}
-                  session={session}
-                />
-              )}
-              {roomname && <Messages isConnected={isConnected.current} />}
-            </Flex>
+              <Flex
+                style={{ background: "#FCFCFC" }}
+                className="border border-purple-100 rounded-md"
+                flexGrow="1"
+                p="3"
+                gap="2"
+                direction="column"
+                height={"100%"}
+              >
+                {createRoom ? (
+                  <CreateRoomForm
+                    setRoomName={setRoomName}
+                    setCreateRoom={setCreateRoom}
+                    isConnected={isConnected.current}
+                    session={session}
+                  />
+                ) : (
+                  <ChatRooms
+                    setRoomName={setRoomName}
+                    isConnected={isConnected.current}
+                  />
+                )}
+                {roomname && <Messages isConnected={isConnected.current} />}
+              </Flex>
             </ScrollArea>
             {roomname && (
               <SendMessage

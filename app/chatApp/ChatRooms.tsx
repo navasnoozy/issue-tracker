@@ -1,32 +1,44 @@
-'use client'
+"use client";
 import getSocket from "@/lib/socket";
-import { Card,Text } from "@radix-ui/themes";
+import { Button, Card, Text } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 
 interface Props {
   isConnected: boolean;
+  setRoomName : (value:string)=> void
 }
 
-interface RoomsList {
-    room: string
-}
+const ChatRooms = ({ isConnected,setRoomName }: Props) => {
+  const [roomsList, setRoomsList] = useState(["Public room"]);
+  console.log("roomlist", roomsList);
 
-const ChatRooms = ({ isConnected }: Props) => {
-  const [roomsList, setRoomsList] = useState<RoomsList[]>([]);
+  const handleClick = (value: string) => {
+    console.log(value);
+  };
 
   useEffect(() => {
     const socket = getSocket(isConnected);
+    console.log("chatrooms use effect");
 
-    socket?.on("getRoomsList", (roomsList:RoomsList[]) => {
-      setRoomsList(roomsList);
+    socket?.on("getRoomsList", (newRooms: []) => {
+      setRoomsList(newRooms);
+      console.log("roomlist2", roomsList);
     });
   }, [isConnected]);
 
   return (
     <>
-     {roomsList.map((room,index)=>(
-        <Card key={index}><Text>{room.room}</Text></Card>
-     ))}
+      {roomsList.map((room, index) => (
+        <Card
+          key={index}
+          className="!flex !justify-between !items-center !gap-2"
+        >
+          {room}{" "}
+          <Button size="2" variant="soft" onClick={() => handleClick(room)}>
+            Join
+          </Button>
+        </Card>
+      ))}
     </>
   );
 };
