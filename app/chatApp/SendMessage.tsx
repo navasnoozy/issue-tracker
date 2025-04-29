@@ -16,10 +16,10 @@ interface Props {
 const SendMessage = ({ isConnected,roomName, session }: Props) => {
   const { register, handleSubmit } = useForm();
 
-  const submit = handleSubmit(({ message }) => {
+  const submit = handleSubmit(({ messageText }) => {
     const socket = getSocket(isConnected);
 
-    socket?.emit("message", {roomName,message,session});
+    socket?.emit("message", {roomName,messageText,session});
   });
 
   return (
@@ -29,7 +29,7 @@ const SendMessage = ({ isConnected,roomName, session }: Props) => {
           style={{ flexGrow: 1 }}
           placeholder="Enter your message"
         >
-          <TextField.Slot {...register("message", { required: true })}>
+          <TextField.Slot {...register("messageText", { required: true })}>
             <MdMessage />
           </TextField.Slot>
         </TextField.Root>

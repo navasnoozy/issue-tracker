@@ -1,4 +1,4 @@
-const getFormatedTime = (timestamp:Date) => {
+const getFormatedTime = (timestamp:number) => {
   const date = new Date(timestamp);
   const options: Intl.DateTimeFormatOptions = {
     hour: "numeric",

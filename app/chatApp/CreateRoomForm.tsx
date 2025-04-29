@@ -20,10 +20,10 @@ const CreateRoomForm = ({ isConnected, setRoomName,setCreateRoom,session }: Prop
   
 
   let socket = getSocket(isConnected);
-  const name = session?.user?.name || socket?.id?.substring(0, 5);
+  
 
   const submit = handleSubmit(({ roomname }) => {
-    socket?.emit("createRoom", { roomname, name });
+    socket?.emit("createRoom", { roomname, session });
     setRoomName (roomname);
     setCreateRoom (false)
 
