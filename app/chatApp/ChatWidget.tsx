@@ -1,14 +1,14 @@
 //app/chatApp/ChatWidget.tsx file
 "use client";
-import { Box, Button, Flex, Popover, ScrollArea } from "@radix-ui/themes";
-import { useEffect, useRef, useState } from "react";
-import CreateRoomForm from "./CreateRoomForm";
-import Messages from "./Messages";
-import SendMessage from "./SendMessage";
 import getSocket from "@/lib/socket";
-import { CgCloseR } from "react-icons/cg";
+import { Box, Button, Flex, Popover, ScrollArea } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
-import ChatRooms from "./ChatRooms";
+import { useEffect, useRef, useState } from "react";
+import Messages from "./chatWindow/Messages";
+import SendMessage from "./chatWindow/SendMessage";
+import ChatRooms from "./chatRoom/ChatRooms";
+import CreateRoomForm from "./chatRoom/CreateRoomForm";
+import TopPanel from "./TopPanel";
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -83,16 +83,7 @@ const ChatWidget = () => {
           style={{ display: "flex" }}
         >
           <Flex direction="column" flexGrow="1" gap="2">
-            <Flex justify={"between"}>
-              <Button
-                size="1"
-                variant="ghost"
-                onClick={() => setCreateRoom(!createRoom)}
-              >
-                {createRoom ? "Room List" : "Create New Room"}
-              </Button>
-              <CgCloseR className="text-purple-900" />
-            </Flex>
+            <TopPanel createRoom={createRoom} setCreateRoom={setCreateRoom} />
             <ScrollArea
               type="auto"
               scrollbars="vertical"
@@ -116,7 +107,7 @@ const ChatWidget = () => {
                   />
                 ) : (
                   <ChatRooms
-                  session={session}
+                    session={session}
                     roomname={roomname}
                     setRoomName={setRoomName}
                     isConnected={isConnected.current}

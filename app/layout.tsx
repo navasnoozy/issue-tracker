@@ -9,7 +9,6 @@ import AuthProvider from "./auth/AuthProvider";
 import QueryClientProvider from "./QueryClientProvider";
 import ChatWidget from "./chatApp/ChatWidget";
 
-
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
