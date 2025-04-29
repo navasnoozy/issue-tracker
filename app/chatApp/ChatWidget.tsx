@@ -9,6 +9,7 @@ import SendMessage from "./chatWindow/SendMessage";
 import ChatRooms from "./chatRoom/ChatRooms";
 import CreateRoomForm from "./chatRoom/CreateRoomForm";
 import TopPanel from "./TopPanel";
+import NoAccess from "./elements/NoAccess";
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,29 +39,7 @@ const ChatWidget = () => {
 
   //If user not loged in
   if (status === "unauthenticated") {
-    return (
-      <Box position="fixed" bottom="4" right="4">
-        <Popover.Root>
-          <Popover.Trigger>
-            <Button className="!rounded-full" size={{ initial: "3", md: "4" }}>
-              Chat Rooms
-            </Button>
-          </Popover.Trigger>
-
-          <Popover.Content
-            width="360px"
-            minHeight="50vh"
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            Login first to access chat Rooms
-          </Popover.Content>
-        </Popover.Root>
-      </Box>
-    );
+    return <NoAccess />;
   }
 
   // if user loged in
