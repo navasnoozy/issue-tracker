@@ -1,4 +1,4 @@
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { Session } from "next-auth";
 import getFormatedTime from "@/app/utils/getFormatTime";
 
@@ -135,11 +135,13 @@ function handleRoomCreation(socket) {
 
 // Handle message sending events
 
-function handleMessageSending(socket) {
+function handleMessageSending(socket:Socket) {
   return ({ roomname, messageText, session }: SocketData) => {
     console.log(
       `roomname- ${roomname}, mess: ${messageText},   sess ${session}`
     );
+
+
 
     if (!roomname || !messageText || !session) {
       console.error("Invalid message attempt: missing required dataaaa");
@@ -160,3 +162,12 @@ function handleMessageSending(socket) {
     socket.to(roomname).emit("roomMessage", broadcastMessage);
   };
 }
+
+// //handle chat rooms
+
+// function handleChatRooms (){
+       
+//   const chatRooms = new Map();
+//   chatRooms.set()
+
+// }

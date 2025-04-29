@@ -1,7 +1,7 @@
 //app/chatApp/Message.tsx file
 "use client";
 import getSocket from "@/lib/socket";
-import { Avatar, Box, Flex, ScrollArea } from "@radix-ui/themes";
+import { Avatar, Box, Flex, Text } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -47,9 +47,30 @@ const Messages = ({ isConnected }: Props) => {
           className={`${style[msg.type]?.justify} items-center`}
         >
           {msg.type === "broadcast" && (
-            <Avatar size="2" radius="full" fallback="A" />
+            <Avatar
+              size="2"
+              src={msg.user?.avatar}
+              radius="full"
+              fallback="A"
+            />
           )}
-          <Box className={`${style[msg.type]?.className}`}>{msg.content}</Box>
+          <Box className={`${style[msg.type]?.className}`}>
+            {msg.type === "notifi" ? (
+              <Text>{`${msg.content} ${msg.time}`}</Text>
+            ) : (
+              <>
+                <Flex gap="1" align="center">
+                  <Text size="2" color="red">
+                    {msg.user?.name}
+                  </Text>
+                  <Text size="1" color="jade">
+                    {msg.time}
+                  </Text>
+                </Flex>
+                <Text >{msg.content}</Text>
+              </>
+            )}
+          </Box>
         </Flex>
       ))}
     </>
@@ -61,11 +82,11 @@ export default Messages;
 const style = {
   self: {
     justify: "!justify-end",
-    className: "bg-green-500 text-white rounded-lg py-1 px-4",
+    className: "bg-green-300 rounded-lg py-1 px-4",
   },
   broadcast: {
     justify: "!justfy-start",
-    className: "bg-blue-500 text-white rounded-lg py-1 px-4",
+    className: "bg-blue-300 rounded-lg py-1 px-4",
   },
   notifi: {
     justify: "!justify-center",
@@ -73,29 +94,29 @@ const style = {
   },
 };
 
-// const dummyMessages: MessageType[] = [
-//   {
-//     id: crypto.randomUUID(),
-//     time: "12:00 pm",
-//     type: "broadcast",
-//     content: "hi",
-//     user: {
-//       name: "navas",
-//     },
-//   },
-//   {
-//     id: crypto.randomUUID(),
-//     time: "12:00 pm",
-//     type: "self",
-//     content: "poda",
-//     user: {
-//       name: "ghadhar",
-//     },
-//   },
-//   {
-//     id: crypto.randomUUID(),
-//     time: "12:00 pm",
-//     type: "notifi",
-//     content: "john joined"
-//   },
-// ]
+const dummyMessages: MessageType[] = [
+  {
+    id: crypto.randomUUID(),
+    time: "12:00 pm",
+    type: "broadcast",
+    content: "hi",
+    user: {
+      name: "navas",
+    },
+  },
+  {
+    id: crypto.randomUUID(),
+    time: "12:00 pm",
+    type: "self",
+    content: "poda",
+    user: {
+      name: "ghadhar",
+    },
+  },
+  {
+    id: crypto.randomUUID(),
+    time: "12:00 pm",
+    type: "notifi",
+    content: "john joined",
+  },
+];
