@@ -1,7 +1,7 @@
 //app/chatApp/Message.tsx file
 "use client";
 import getSocket from "@/lib/socket";
-import { Avatar, Box, Flex } from "@radix-ui/themes";
+import { Avatar, Box, Flex, ScrollArea } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -22,21 +22,21 @@ export interface MessageType {
 const Messages = ({ isConnected }: Props) => {
   const [messages, setMessages] = useState<MessageType[]>([]);
 
-  useEffect (()=>{
-    console.log('message use effect');
-    
+  useEffect(() => {
+    console.log("message use effect");
+
     const socket = getSocket(isConnected);
 
-    const handleRoomMessage = (message:MessageType)=>{
-          setMessages(prev=>[...prev,message]);
+    const handleRoomMessage = (message: MessageType) => {
+      setMessages((prev) => [...prev, message]);
     };
 
-    socket?.on('roomMessage',handleRoomMessage);
+    socket?.on("roomMessage", handleRoomMessage);
 
     return () => {
       socket?.off("roomMessage", handleRoomMessage);
     };
-  },[isConnected])
+  }, [isConnected]);
 
   return (
     <>

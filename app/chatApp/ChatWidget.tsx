@@ -1,6 +1,6 @@
 //app/chatApp/ChatWidget.tsx file
 "use client";
-import { Box, Button, Flex, Popover } from "@radix-ui/themes";
+import { Box, Button, Flex, Popover, ScrollArea } from "@radix-ui/themes";
 import { useEffect, useRef, useState } from "react";
 import CreateRoomForm from "./CreateRoomForm";
 import Messages from "./Messages";
@@ -93,6 +93,7 @@ const ChatWidget = () => {
               </Button>
               <CgCloseR className="text-purple-900" />
             </Flex>
+            <ScrollArea type="auto"  scrollbars="vertical" style={{ height: '60vh' }} >
             <Flex
               style={{ background: "#FCFCFC" }}
               className="border border-purple-100 rounded-md"
@@ -100,6 +101,7 @@ const ChatWidget = () => {
               p="3"
               gap="2"
               direction="column"
+              height={'100%'}
             >
               {createRoom && (
                 <CreateRoomForm
@@ -111,6 +113,7 @@ const ChatWidget = () => {
               )}
               {roomname && <Messages isConnected={isConnected.current} />}
             </Flex>
+            </ScrollArea>
             {roomname && (
               <SendMessage
                 roomname={roomname}
