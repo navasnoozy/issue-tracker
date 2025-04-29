@@ -1,13 +1,13 @@
 //app/layout.tsx
-import "@radix-ui/themes/styles.css";
-import "./globals.css";
 import { Theme } from "@radix-ui/themes";
+import "@radix-ui/themes/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import NavBar from "./components/navbar/NavBar";
 import AuthProvider from "./auth/AuthProvider";
+import ChatLauncher from "./chatApp/ChatLauncher";
+import NavBar from "./components/navbar/NavBar";
+import "./globals.css";
 import QueryClientProvider from "./QueryClientProvider";
-import ChatWidget from "./chatApp/ChatWidget";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -34,7 +34,7 @@ export default function RootLayout({
                   </div>
                 </main>
               </div>
-              <ChatWidget />
+              <ChatLauncher />
             </Theme>
           </AuthProvider>
         </QueryClientProvider>

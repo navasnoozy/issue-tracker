@@ -11,101 +11,58 @@ import CreateRoomForm from "./chatRoom/CreateRoomForm";
 import TopPanel from "./TopPanel";
 import NoAccess from "./elements/NoAccess";
 
-const ChatWidget = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface Props {
+  isConnected: boolean
+}
+
+const ChatWidget = ({isConnected}:Props) => {
   const [createRoom, setCreateRoom] = useState(false);
   const [roomname, setRoomName] = useState("");
-  const isConnected = useRef(false);
-  const { data: session, status } = useSession();
 
-  const handleTongle = (open: boolean) => {
-    setIsOpen(open);
-  };
+  const { data: session} = useSession();
 
-  useEffect(() => {
-    if (isOpen) {
-      let socket = getSocket(isConnected.current);
-      socket?.on("connect", () => {
-        console.log(`User ${socket.id} is connected`);
-        isConnected.current = true;
-      });
-
-      return () => {
-        socket?.disconnect();
-        isConnected.current = false;
-      };
-    }
-  }, [isOpen]);
-
-  //If user not loged in
-  if (status === "unauthenticated") {
-    return <NoAccess />;
-  }
+ 
 
   // if user loged in
   return (
-    <Box
-      position="fixed"
-      bottom="4" // 1rem = 16px (Tailwind scale: 4 = 16px)
-      right="4"
-    >
-      <Popover.Root open={isOpen} onOpenChange={(open) => handleTongle(open)}>
-        <Popover.Trigger>
-          <Button className="!rounded-full" size={{ initial: "3", md: "4" }}>
-            Chat Rooms
-          </Button>
-        </Popover.Trigger>
-
-        <Popover.Content
-          width="360px"
-          minHeight="50vh"
-          style={{ display: "flex" }}
+    <Flex direction="column" flexGrow="1" gap="2">
+      <TopPanel createRoom={createRoom} setCreateRoom={setCreateRoom} />
+      <ScrollArea type="auto" scrollbars="vertical" style={{ height: "60vh" }}>
+        <Flex
+          style={{ background: "#FCFCFC" }}
+          className="border border-purple-100 rounded-md"
+          flexGrow="1"
+          p="3"
+          gap="2"
+          direction="column"
+          height={"100%"}
         >
-          <Flex direction="column" flexGrow="1" gap="2">
-            <TopPanel createRoom={createRoom} setCreateRoom={setCreateRoom} />
-            <ScrollArea
-              type="auto"
-              scrollbars="vertical"
-              style={{ height: "60vh" }}
-            >
-              <Flex
-                style={{ background: "#FCFCFC" }}
-                className="border border-purple-100 rounded-md"
-                flexGrow="1"
-                p="3"
-                gap="2"
-                direction="column"
-                height={"100%"}
-              >
-                {createRoom ? (
-                  <CreateRoomForm
-                    setRoomName={setRoomName}
-                    setCreateRoom={setCreateRoom}
-                    isConnected={isConnected.current}
-                    session={session}
-                  />
-                ) : (
-                  <ChatRooms
-                    session={session}
-                    roomname={roomname}
-                    setRoomName={setRoomName}
-                    isConnected={isConnected.current}
-                  />
-                )}
-                {roomname && <Messages isConnected={isConnected.current} />}
-              </Flex>
-            </ScrollArea>
-            {roomname && (
-              <SendMessage
-                roomname={roomname}
-                isConnected={isConnected.current}
-                session={session}
-              />
-            )}
-          </Flex>
-        </Popover.Content>
-      </Popover.Root>
-    </Box>
+          {createRoom ? (
+            <CreateRoomForm
+              setRoomName={setRoomName}
+              setCreateRoom={setCreateRoom}
+              isConnected={isConnected}
+              session={session}
+            />
+          ) : (
+            <ChatRooms
+              session={session}
+              roomname={roomname}
+              setRoomName={setRoomName}
+              isConnected={isConnected}
+            />
+          )}
+          {roomname && <Messages isConnected={isConnected} />}
+        </Flex>
+      </ScrollArea>
+      {roomname && (
+        <SendMessage
+          roomname={roomname}
+          isConnected={isConnected}
+          session={session}
+        />
+      )}
+    </Flex>
   );
 };
 
