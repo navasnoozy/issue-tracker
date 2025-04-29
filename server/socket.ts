@@ -1,5 +1,7 @@
 //server/socket.ts
 import { Server } from "socket.io";
+import { Session } from "next-auth";
+import getFormatedTime from "@/app/utils/getFormatTime";
 
 export interface MessageType {
   id: string;
@@ -10,6 +12,13 @@ export interface MessageType {
     name: string;
     avatar?: string;
   };
+};
+
+interface Data{
+  roomname:string,
+  messageText?:string | number;
+  name?: string
+  session?: Session
 }
 
 const createMessage = (
@@ -17,15 +26,8 @@ const createMessage = (
   type: "broadcast" | "notifi" | "self",
   content: string
 ) => {
-  const timestamp = Date.now();
-  const date = new Date(timestamp);
-  const options: Intl.DateTimeFormatOptions = {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  };
-  const formattedTime = date.toLocaleTimeString("en-US", options);
-
+     const time = Date.now()
+    const formattedTime = getFormatedTime(time)
   const message: MessageType = {
     id: crypto.randomUUID(),
     time: formattedTime,
@@ -48,9 +50,10 @@ export function setUpSocketServer(httpServer) {
   io.on("connect", (socket) => {
     console.log(`User ${socket.id} connection established`);
 
+    //ROOM CREATION
     socket.on(
       "createRoom",
-      ({ roomname, name }: { roomname: string; name: string }) => {
+      ({ roomname, name ='UnknownUser' }: Data) => {
         socket.join(roomname);
 
         //Welcome message to the sender
@@ -66,6 +69,11 @@ export function setUpSocketServer(httpServer) {
         socket.to(roomname).emit("roomMessage", notifi);
       }
     );
+
+    //SENDING MESSAGES
+      socket.on('message', ({roomname,messageText,session}:Data)=>{
+         const message = createMessage (session?.user?.name)
+      })
 
     socket.on("disconnect", (reason) => {
       console.log(`User ${socket.id} disconnected`);

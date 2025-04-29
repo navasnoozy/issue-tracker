@@ -2,27 +2,29 @@
 "use client";
 import getSocket from "@/lib/socket";
 import { Button, Card, Flex, TextField } from "@radix-ui/themes";
+import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 
 interface Props {
   isConnected: boolean;
-  setInRoom: (value:string) => void;
+  setRoomName: (value:string) => void;
   setCreateRoom:(value:boolean)=> void
+  session?:Session | null
 }
 
-const CreateRoomForm = ({ isConnected, setInRoom,setCreateRoom }: Props) => {
+const CreateRoomForm = ({ isConnected, setRoomName,setCreateRoom,session }: Props) => {
   const { register, handleSubmit } = useForm();
-  const { data } = useSession();
+ 
 
   
 
   let socket = getSocket(isConnected);
-  const name = data?.user?.name || socket?.id?.substring(0, 5);
+  const name = session?.user?.name || socket?.id?.substring(0, 5);
 
   const submit = handleSubmit(({ roomname }) => {
     socket?.emit("createRoom", { roomname, name });
-    setInRoom (roomname);
+    setRoomName (roomname);
     setCreateRoom (false)
 
     

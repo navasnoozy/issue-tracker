@@ -9,12 +9,13 @@ import getSocket from "@/lib/socket";
 import { CgCloseR } from "react-icons/cg";
 import { useSession } from "next-auth/react";
 
+
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [createRoom, setCreateRoom] = useState(false);
-  const [InRoom, setInRoom] = useState("");
+  const [roomName, setRoomName] = useState("");
   const isConnected = useRef(false);
-  const { status } = useSession();
+  const { data: session, status } = useSession();
 
   const handleTongle = (open: boolean) => {
     setIsOpen(open);
@@ -102,14 +103,21 @@ const ChatWidget = () => {
             >
               {createRoom && (
                 <CreateRoomForm
-                  setInRoom={setInRoom}
+                  setRoomName={setRoomName}
                   setCreateRoom={setCreateRoom}
                   isConnected={isConnected.current}
+                  session={session}
                 />
               )}
-              {InRoom && <Messages isConnected={isConnected.current} />}
+              {roomName && <Messages isConnected={isConnected.current} />}
             </Flex>
-            {InRoom && <SendMessage />}
+            {roomName && (
+              <SendMessage
+                roomName={roomName}
+                isConnected={isConnected.current}
+                session={session}
+              />
+            )}
           </Flex>
         </Popover.Content>
       </Popover.Root>
