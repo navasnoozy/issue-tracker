@@ -3,10 +3,10 @@
 import { Flex, ScrollArea } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import ChatRooms from "./chatRoom/ChatRooms";
-import CreateRoomForm from "./chatRoom/CreateRoomForm";
-import Messages from "./chatWindow/Messages";
-import SendMessage from "./chatWindow/SendMessage";
+import ChatRooms from "./chatroom/ChatRooms";
+import CreateRoomForm from "./chatroom/CreateRoomForm";
+import Messages from "./chatingpanel/Messages";
+import SendMessage from "./chatingpanel/SendMessage";
 import TopPanel from "./TopPanel";
 
 const ChatWidget = () => {
@@ -33,7 +33,7 @@ const ChatWidget = () => {
           />}
         </Flex>
       </ScrollArea>
-      {currentRoom && <SendMessage roomname={currentRoom} session={session} />}
+      {currentRoom && <SendMessage roomname={currentRoom} />}
     </Flex>
   );
 };

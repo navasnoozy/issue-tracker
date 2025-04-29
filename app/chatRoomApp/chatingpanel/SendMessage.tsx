@@ -1,27 +1,24 @@
-'use client'
+"use client";
 
-import { Flex, TextField, Button } from "@radix-ui/themes";
+import getSocket from "@/lib/socket";
+import { Button, Flex, TextField } from "@radix-ui/themes";
+import { useSession } from "next-auth/react";
+import { useForm } from "react-hook-form";
 import { IoMdSend } from "react-icons/io";
 import { MdMessage } from "react-icons/md";
-import { useForm } from "react-hook-form";
-import getSocket from "@/lib/socket";
-import { Session } from "next-auth";
-import { useState } from "react";
 
 interface Props {
   roomname: string;
-  session:Session | null
 }
 
-const SendMessage = ({roomname, session }: Props) => {
-  const { register, handleSubmit,reset } = useForm();
-
+const SendMessage = ({ roomname }: Props) => {
+  const { register, handleSubmit, reset } = useForm();
+  const { data: session } = useSession();
 
   const submit = handleSubmit(({ messageText }) => {
     const socket = getSocket();
-    
 
-    socket?.emit("message", {roomname,messageText,session});
+    socket?.emit("message", { roomname, messageText, session });
     reset();
   });
 
@@ -31,7 +28,7 @@ const SendMessage = ({roomname, session }: Props) => {
         <TextField.Root
           style={{ flexGrow: 1 }}
           placeholder="Enter your message"
-          {...register('messageText',{ required: true })}
+          {...register("messageText", { required: true })}
         >
           <TextField.Slot>
             <MdMessage />

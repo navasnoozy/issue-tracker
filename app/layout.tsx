@@ -4,7 +4,7 @@ import "@radix-ui/themes/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import AuthProvider from "./auth/AuthProvider";
-import ChatLauncher from "./chatApp/ChatLauncher";
+import ChatLauncher from "./chatRoomApp/ChatLauncher";
 import NavBar from "./components/navbar/NavBar";
 import "./globals.css";
 import QueryClientProvider from "./QueryClientProvider";
