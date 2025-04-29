@@ -2,23 +2,27 @@
 import getSocket from "@/lib/socket";
 import { Button, Card, Text } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
+import { Session } from "next-auth";
 
 interface Props {
   isConnected: boolean;
-  setRoomName : (value:string)=> void
+  roomname: string;
+  session: Session | null
+  setRoomName: (value: string) => void;
 }
 
-const ChatRooms = ({ isConnected,setRoomName }: Props) => {
+const ChatRooms = ({ isConnected, setRoomName, roomname, session }: Props) => {
   const [roomsList, setRoomsList] = useState(["Public room"]);
-  console.log("roomlist", roomsList);
 
-  const handleClick = (value: string) => {
-    console.log(value);
+  const socket = getSocket(isConnected);
+
+
+  const handleClick = (room: string) => {
+    setRoomName(room);
+    socket?.emit("createRoom", { roomname, session });
   };
 
   useEffect(() => {
-    const socket = getSocket(isConnected);
-    console.log("chatrooms use effect");
 
     socket?.on("getRoomsList", (newRooms: []) => {
       setRoomsList(newRooms);

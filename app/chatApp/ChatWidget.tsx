@@ -116,6 +116,8 @@ const ChatWidget = () => {
                   />
                 ) : (
                   <ChatRooms
+                  session={session}
+                    roomname={roomname}
                     setRoomName={setRoomName}
                     isConnected={isConnected.current}
                   />
