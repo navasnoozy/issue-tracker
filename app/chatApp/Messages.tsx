@@ -20,7 +20,7 @@ export interface MessageType {
 }
 
 const Messages = ({ isConnected }: Props) => {
-  const [messages, setMessages] = useState<MessageType[]>(dummyMessages);
+  const [messages, setMessages] = useState<MessageType[]>([]);
 
   useEffect (()=>{
     console.log('message use effect');
@@ -28,7 +28,6 @@ const Messages = ({ isConnected }: Props) => {
     const socket = getSocket(isConnected);
 
     const handleRoomMessage = (message:MessageType)=>{
-          console.log('mess',message);
           setMessages(prev=>[...prev,message]);
     };
 
@@ -74,29 +73,29 @@ const style = {
   },
 };
 
-const dummyMessages: MessageType[] = [
-  {
-    id: crypto.randomUUID(),
-    time: "12:00 pm",
-    type: "broadcast",
-    content: "hi",
-    user: {
-      name: "navas",
-    },
-  },
-  {
-    id: crypto.randomUUID(),
-    time: "12:00 pm",
-    type: "self",
-    content: "poda",
-    user: {
-      name: "ghadhar",
-    },
-  },
-  {
-    id: crypto.randomUUID(),
-    time: "12:00 pm",
-    type: "notifi",
-    content: "john joined"
-  },
-]
+// const dummyMessages: MessageType[] = [
+//   {
+//     id: crypto.randomUUID(),
+//     time: "12:00 pm",
+//     type: "broadcast",
+//     content: "hi",
+//     user: {
+//       name: "navas",
+//     },
+//   },
+//   {
+//     id: crypto.randomUUID(),
+//     time: "12:00 pm",
+//     type: "self",
+//     content: "poda",
+//     user: {
+//       name: "ghadhar",
+//     },
+//   },
+//   {
+//     id: crypto.randomUUID(),
+//     time: "12:00 pm",
+//     type: "notifi",
+//     content: "john joined"
+//   },
+// ]

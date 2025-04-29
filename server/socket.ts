@@ -88,6 +88,7 @@ export function setUpSocketServer(httpServer) {
      */
     socket.on("disconnect", (reason) => {
       console.log(`User ${socket.id} disconnected: ${reason}`);
+    
     });
   });
 }
@@ -129,8 +130,10 @@ function handleRoomCreation(socket) {
 
 function handleMessageSending(socket) {
   return ({ roomname, messageText, session }: SocketData) => {
+    console.log(`roomname- ${roomname}, mess: ${messageText},   sess ${session}`);
+    
     if (!roomname || !messageText || !session) {
-      console.error("Invalid message attempt: missing required data");
+      console.error("Invalid message attempt: missing required dataaaa");
       return;
     }
     
@@ -140,7 +143,7 @@ function handleMessageSending(socket) {
       "self",
       messageText
     );
-    
+
     socket.emit("roomMessage", selfMessage);
     
     // Create and broadcast message to other users in the room

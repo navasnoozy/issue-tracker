@@ -13,7 +13,7 @@ import { useSession } from "next-auth/react";
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [createRoom, setCreateRoom] = useState(false);
-  const [roomName, setRoomName] = useState("");
+  const [roomname, setRoomName] = useState("");
   const isConnected = useRef(false);
   const { data: session, status } = useSession();
 
@@ -109,11 +109,11 @@ const ChatWidget = () => {
                   session={session}
                 />
               )}
-              {roomName && <Messages isConnected={isConnected.current} />}
+              {roomname && <Messages isConnected={isConnected.current} />}
             </Flex>
-            {roomName && (
+            {roomname && (
               <SendMessage
-                roomName={roomName}
+                roomname={roomname}
                 isConnected={isConnected.current}
                 session={session}
               />

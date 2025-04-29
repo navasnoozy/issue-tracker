@@ -6,20 +6,25 @@ import { MdMessage } from "react-icons/md";
 import { useForm } from "react-hook-form";
 import getSocket from "@/lib/socket";
 import { Session } from "next-auth";
+import { useState } from "react";
 
 interface Props {
   isConnected: boolean;
-  roomName: string;
+  roomname: string;
   session:Session | null
 }
 
-const SendMessage = ({ isConnected,roomName, session }: Props) => {
-  const { register, handleSubmit } = useForm();
+const SendMessage = ({ isConnected,roomname, session }: Props) => {
+  const { register, handleSubmit,reset } = useForm();
+
 
   const submit = handleSubmit(({ messageText }) => {
     const socket = getSocket(isConnected);
+    console.log(messageText,roomname,session);
+    
 
-    socket?.emit("message", {roomName,messageText,session});
+    socket?.emit("message", {roomname,messageText,session});
+    reset();
   });
 
   return (
@@ -28,8 +33,9 @@ const SendMessage = ({ isConnected,roomName, session }: Props) => {
         <TextField.Root
           style={{ flexGrow: 1 }}
           placeholder="Enter your message"
+          {...register('messageText',{ required: true })}
         >
-          <TextField.Slot {...register("messageText", { required: true })}>
+          <TextField.Slot>
             <MdMessage />
           </TextField.Slot>
         </TextField.Root>
