@@ -74,7 +74,7 @@ export function setUpSocketServer(httpServer) {
     /**
      * Room Events
      */
-    socket.on("createRoom", handleRoomCreation(socket));
+    socket.on("createRoom", handleRoomCreation(socket, io));
 
     /**
      * Message Events
@@ -92,7 +92,7 @@ export function setUpSocketServer(httpServer) {
 
 // Handle room creation events
 
-function handleRoomCreation(socket) {
+function handleRoomCreation(socket: Socket, io: Server) {
   return ({ roomname, session }: SocketData) => {
     if (!roomname || !session) {
       console.error(
@@ -104,6 +104,8 @@ function handleRoomCreation(socket) {
     // Join the specified room
     socket.join(roomname);
     const username = session.user?.name || "User";
+
+    handleChatRooms(roomname, session.user?.email || "anonymous", io);
 
     // Send welcome message to the user who joined
     const welcomeMessage = MessageFactory.create(
@@ -127,21 +129,19 @@ function handleRoomCreation(socket) {
       "notifi",
       `${username} has left`
     );
-    socket.on('disconnect',()=>{
+    socket.on("disconnect", () => {
       socket.to(roomname).emit("roomMessage", leftNotification);
-    })
+    });
   };
 }
 
 // Handle message sending events
 
-function handleMessageSending(socket:Socket) {
+function handleMessageSending(socket: Socket) {
   return ({ roomname, messageText, session }: SocketData) => {
     console.log(
       `roomname- ${roomname}, mess: ${messageText},   sess ${session}`
     );
-
-
 
     if (!roomname || !messageText || !session) {
       console.error("Invalid message attempt: missing required dataaaa");
@@ -163,11 +163,17 @@ function handleMessageSending(socket:Socket) {
   };
 }
 
-// //handle chat rooms
+//handle chat rooms
+const chatRooms = new Map();
 
-// function handleChatRooms (){
-       
-//   const chatRooms = new Map();
-//   chatRooms.set()
+function handleChatRooms(roomname: string, userEmail: string, io: Server) {
+  if (!chatRooms.has(roomname)) {
+    chatRooms.set(roomname, new Set());
+  }
 
-// }
+  if (userEmail) {
+    chatRooms.get(roomname).add(userEmail);
+  }
+
+  io.emit("getRoomsList", [...chatRooms.keys()]);
+}
