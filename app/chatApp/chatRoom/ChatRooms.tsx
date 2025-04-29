@@ -4,17 +4,11 @@ import { Button, Card, Text } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { Session } from "next-auth";
 
-interface Props {
-  isConnected: boolean;
-  roomname: string;
-  session: Session | null
-  setRoomName: (value: string) => void;
-}
 
-const ChatRooms = ({ isConnected, setRoomName, roomname, session }: Props) => {
+const ChatRooms = () => {
   const [roomsList, setRoomsList] = useState(["Public room"]);
 
-  const socket = getSocket(isConnected);
+  const socket = getSocket();
 
 
   const handleClick = (room: string) => {
@@ -26,9 +20,8 @@ const ChatRooms = ({ isConnected, setRoomName, roomname, session }: Props) => {
 
     socket?.on("getRoomsList", (newRooms: []) => {
       setRoomsList(newRooms);
-      console.log("roomlist2", roomsList);
     });
-  }, [isConnected]);
+  }, []);
 
   return (
     <>

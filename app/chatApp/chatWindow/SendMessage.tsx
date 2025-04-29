@@ -9,18 +9,16 @@ import { Session } from "next-auth";
 import { useState } from "react";
 
 interface Props {
-  isConnected: boolean;
   roomname: string;
   session:Session | null
 }
 
-const SendMessage = ({ isConnected,roomname, session }: Props) => {
+const SendMessage = ({roomname, session }: Props) => {
   const { register, handleSubmit,reset } = useForm();
 
 
   const submit = handleSubmit(({ messageText }) => {
-    const socket = getSocket(isConnected);
-    console.log(messageText,roomname,session);
+    const socket = getSocket();
     
 
     socket?.emit("message", {roomname,messageText,session});

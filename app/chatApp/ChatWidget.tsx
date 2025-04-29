@@ -1,32 +1,23 @@
 //app/chatApp/ChatWidget.tsx file
 "use client";
-import getSocket from "@/lib/socket";
-import { Box, Button, Flex, Popover, ScrollArea } from "@radix-ui/themes";
+import { Flex, ScrollArea } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
-import { useEffect, useRef, useState } from "react";
-import Messages from "./chatWindow/Messages";
-import SendMessage from "./chatWindow/SendMessage";
+import { useState } from "react";
 import ChatRooms from "./chatRoom/ChatRooms";
 import CreateRoomForm from "./chatRoom/CreateRoomForm";
+import Messages from "./chatWindow/Messages";
+import SendMessage from "./chatWindow/SendMessage";
 import TopPanel from "./TopPanel";
-import NoAccess from "./elements/NoAccess";
 
-interface Props {
-  isConnected: boolean
-}
+const ChatWidget = () => {
+  const [showCreateRoom, setShowCreateRoom] = useState(false);
+  const [currentRoom, setCurrentRoom] = useState("");
 
-const ChatWidget = ({isConnected}:Props) => {
-  const [createRoom, setCreateRoom] = useState(false);
-  const [roomname, setRoomName] = useState("");
+  const { data: session } = useSession();
 
-  const { data: session} = useSession();
-
- 
-
-  // if user loged in
   return (
     <Flex direction="column" flexGrow="1" gap="2">
-      <TopPanel createRoom={createRoom} setCreateRoom={setCreateRoom} />
+      <TopPanel showCreateRoomForm={{ showCreateRoom, setShowCreateRoom }} />
       <ScrollArea type="auto" scrollbars="vertical" style={{ height: "60vh" }}>
         <Flex
           style={{ background: "#FCFCFC" }}
@@ -37,31 +28,12 @@ const ChatWidget = ({isConnected}:Props) => {
           direction="column"
           height={"100%"}
         >
-          {createRoom ? (
-            <CreateRoomForm
-              setRoomName={setRoomName}
-              setCreateRoom={setCreateRoom}
-              isConnected={isConnected}
-              session={session}
-            />
-          ) : (
-            <ChatRooms
-              session={session}
-              roomname={roomname}
-              setRoomName={setRoomName}
-              isConnected={isConnected}
-            />
-          )}
-          {roomname && <Messages isConnected={isConnected} />}
+          {showCreateRoom && <CreateRoomForm setCurrentRoom={setCurrentRoom} 
+          setShowCreateRoom={setShowCreateRoom}
+          />}
         </Flex>
       </ScrollArea>
-      {roomname && (
-        <SendMessage
-          roomname={roomname}
-          isConnected={isConnected}
-          session={session}
-        />
-      )}
+      {currentRoom && <SendMessage roomname={currentRoom} session={session} />}
     </Flex>
   );
 };

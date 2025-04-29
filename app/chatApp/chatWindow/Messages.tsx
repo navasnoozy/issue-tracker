@@ -19,13 +19,12 @@ export interface MessageType {
   };
 }
 
-const Messages = ({ isConnected }: Props) => {
+const Messages = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
 
   useEffect(() => {
-    console.log("message use effect");
 
-    const socket = getSocket(isConnected);
+    const socket = getSocket();
 
     const handleRoomMessage = (message: MessageType) => {
       setMessages((prev) => [...prev, message]);
@@ -36,7 +35,7 @@ const Messages = ({ isConnected }: Props) => {
     return () => {
       socket?.off("roomMessage", handleRoomMessage);
     };
-  }, [isConnected]);
+  }, []);
 
   return (
     <>

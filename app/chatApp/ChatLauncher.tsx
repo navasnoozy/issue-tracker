@@ -9,8 +9,8 @@ import { useSession } from "next-auth/react";
 
 const ChatLauncher = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const isConnected = useRef(false);
-    const {status} = useSession();
+  const initialize = useRef(true);
+  const { status } = useSession();
 
   const handleTongle = (open: boolean) => {
     setIsOpen(open);
@@ -18,24 +18,25 @@ const ChatLauncher = () => {
 
   useEffect(() => {
     if (isOpen) {
-      let socket = getSocket(isConnected.current);
+      let socket = getSocket(initialize.current);
       socket?.on("connect", () => {
         console.log(`User ${socket.id} is connected`);
-        isConnected.current = true;
+        initialize.current = false;
       });
 
       return () => {
         socket?.disconnect();
-        isConnected.current = false;
+        initialize.current = true;
       };
     }
   }, [isOpen]);
 
-   //If user not loged in
-   if (status === "unauthenticated") {
+  //If user not loged in
+  if (status === "unauthenticated") {
     return <NoAccess />;
   }
 
+  // if user loged in
   return (
     <Box
       position="fixed"
@@ -54,7 +55,7 @@ const ChatLauncher = () => {
           minHeight="50vh"
           style={{ display: "flex" }}
         >
-          <ChatWidget isConnected={isConnected.current} />
+          <ChatWidget  />
         </Popover.Content>
       </Popover.Root>
     </Box>
