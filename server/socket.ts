@@ -8,8 +8,8 @@ export interface MessageType {
   type: "broadcast" | "notifi" | "self";
   content: string | number;
   user?: {
-    name?: string | null
-    avatar?: string 
+    name?: string | null;
+    avatar?: string;
   };
 }
 
@@ -20,7 +20,6 @@ interface SocketData {
 }
 
 class MessageFactory {
-
   static create(
     session: Session,
     type: "broadcast" | "notifi" | "self",
@@ -29,7 +28,7 @@ class MessageFactory {
     // Generate common message properties
     const time = Date.now();
     const formattedTime = getFormatedTime(time);
-    
+
     // Base message structure
     const message: MessageType = {
       id: crypto.randomUUID(),
@@ -48,7 +47,7 @@ class MessageFactory {
           avatar: session.user?.image || undefined,
         };
         break;
-      
+
       case "notifi":
         // Only name for notifications (no avatar)
         message.user = {
@@ -61,7 +60,6 @@ class MessageFactory {
   }
 }
 
-
 export function setUpSocketServer(httpServer) {
   const io = new Server(httpServer, {
     cors: {
@@ -72,34 +70,34 @@ export function setUpSocketServer(httpServer) {
   // Handle client connections
   io.on("connect", (socket) => {
     console.log(`User ${socket.id} connection established`);
-    
+
     /**
      * Room Events
      */
     socket.on("createRoom", handleRoomCreation(socket));
-    
+
     /**
      * Message Events
      */
     socket.on("message", handleMessageSending(socket));
-    
+
     /**
      * Connection Events
      */
     socket.on("disconnect", (reason) => {
       console.log(`User ${socket.id} disconnected: ${reason}`);
-    
     });
   });
 }
 
-
- // Handle room creation events
+// Handle room creation events
 
 function handleRoomCreation(socket) {
   return ({ roomname, session }: SocketData) => {
     if (!roomname || !session) {
-      console.error("Invalid room creation attempt: missing roomname or session");
+      console.error(
+        "Invalid room creation attempt: missing roomname or session"
+      );
       return;
     }
 
@@ -122,30 +120,37 @@ function handleRoomCreation(socket) {
       `${username} has joined`
     );
     socket.to(roomname).emit("roomMessage", joinNotification);
+
+    //Notify user left in the room
+    const leftNotification = MessageFactory.create(
+      session,
+      "notifi",
+      `${username} has left`
+    );
+    socket.on('disconnect',()=>{
+      socket.to(roomname).emit("roomMessage", leftNotification);
+    })
   };
 }
-
 
 // Handle message sending events
 
 function handleMessageSending(socket) {
   return ({ roomname, messageText, session }: SocketData) => {
-    console.log(`roomname- ${roomname}, mess: ${messageText},   sess ${session}`);
-    
+    console.log(
+      `roomname- ${roomname}, mess: ${messageText},   sess ${session}`
+    );
+
     if (!roomname || !messageText || !session) {
       console.error("Invalid message attempt: missing required dataaaa");
       return;
     }
-    
+
     // Create and send message to sender (appears as "self")
-    const selfMessage = MessageFactory.create(
-      session,
-      "self",
-      messageText
-    );
+    const selfMessage = MessageFactory.create(session, "self", messageText);
 
     socket.emit("roomMessage", selfMessage);
-    
+
     // Create and broadcast message to other users in the room
     const broadcastMessage = MessageFactory.create(
       session,
