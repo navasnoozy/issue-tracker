@@ -4,10 +4,21 @@ import getSocket from "@/lib/socket";
 import { Button, Flex, TextField } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 interface Props {
     setCurrentRoom: React.Dispatch<React.SetStateAction<string>>;
     setShowCreateRoom:React.Dispatch<React.SetStateAction<boolean>>;
+}
+interface CreateRoomResponse {
+  success: boolean;
+  roomname?: string;
+  error?: string;
+}
+
+type Response = {
+    success:boolean;
+    statusText:string
 }
 
 const CreateRoomForm = ({ setCurrentRoom, setShowCreateRoom }: Props) => {
@@ -17,9 +28,16 @@ const CreateRoomForm = ({ setCurrentRoom, setShowCreateRoom }: Props) => {
   let socket = getSocket();
 
   const submit = handleSubmit(({ roomname }) => {
-    socket?.emit("createRoom", { roomname, session });
-    setCurrentRoom(roomname);
-    setShowCreateRoom(false);
+    socket?.emit("createRoom", { roomname, session },(res:Response)=>{
+      if (res.success){
+        toast.success(res.statusText)
+        setCurrentRoom(roomname);
+        setShowCreateRoom(false);
+      }else{
+        toast.error(res.statusText)
+      }
+    });
+   
   });
 
   return (

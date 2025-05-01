@@ -1,23 +1,26 @@
 "use client";
 import getSocket from "@/lib/socket";
 import { Button, Card, Text } from "@radix-ui/themes";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { Session } from "next-auth";
 
 
-const ChatRooms = () => {
+interface Props {
+  setCurrentRoom: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const ChatRooms = ({ setCurrentRoom }: Props) => {
+  const {data: session} = useSession();
   const [roomsList, setRoomsList] = useState(["Public room"]);
+
 
   const socket = getSocket();
 
-
   const handleClick = (room: string) => {
-    setRoomName(room);
-    socket?.emit("createRoom", { roomname, session });
+    socket?.emit("createRoom", { room, session });
   };
 
   useEffect(() => {
-
     socket?.on("getRoomsList", (newRooms: []) => {
       setRoomsList(newRooms);
     });

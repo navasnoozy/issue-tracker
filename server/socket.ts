@@ -1,6 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { Session } from "next-auth";
 import getFormatedTime from "@/app/utils/getFormatTime";
+import { Server as HttpServer } from "http";
 
 export interface MessageType {
   id: string;
@@ -60,7 +61,7 @@ class MessageFactory {
   }
 }
 
-export function setUpSocketServer(httpServer) {
+export function setUpSocketServer(httpServer: HttpServer) {
   const io = new Server(httpServer, {
     cors: {
       origin: "*",
@@ -93,11 +94,12 @@ export function setUpSocketServer(httpServer) {
 // Handle room creation events
 
 function handleRoomCreation(socket: Socket, io: Server) {
-  return ({ roomname, session }: SocketData) => {
+  return ({ roomname, session }: SocketData, callback: Function) => {
     if (!roomname || !session) {
       console.error(
         "Invalid room creation attempt: missing roomname or session"
       );
+      callback ({ success: false, statusText: "Could not create" })
       return;
     }
 
@@ -106,6 +108,8 @@ function handleRoomCreation(socket: Socket, io: Server) {
     const username = session.user?.name || "User";
 
     handleChatRooms(roomname, session.user?.email || "anonymous", io);
+
+    callback ({ success: true, statusText: "Room Successfully created" })
 
     // Send welcome message to the user who joined
     const welcomeMessage = MessageFactory.create(
@@ -123,6 +127,7 @@ function handleRoomCreation(socket: Socket, io: Server) {
     );
     socket.to(roomname).emit("roomMessage", joinNotification);
 
+   
     //Notify user left in the room
     const leftNotification = MessageFactory.create(
       session,

@@ -3,17 +3,16 @@
 import { Flex, ScrollArea } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import ChatRooms from "./chatroom/ChatRooms";
-import CreateRoomForm from "./chatroom/CreateRoomForm";
-import Messages from "./chatingpanel/Messages";
-import SendMessage from "./chatingpanel/SendMessage";
-import TopPanel from "./TopPanel";
+import ChatRooms from "./ChatRooms";
+import CreateRoomForm from "./CreateRoomForm";
+import Messages from "../conversationPanel/Messages";
+import SendMessage from "../conversationPanel/SendMessage";
+import TopPanel from "../TopPanel";
+import ChatInterface from "../conversationPanel/ChatInterface";
 
-const ChatWidget = () => {
+const RoomInterface = () => {
   const [showCreateRoom, setShowCreateRoom] = useState(false);
   const [currentRoom, setCurrentRoom] = useState("");
-
-  const { data: session } = useSession();
 
   return (
     <Flex direction="column" flexGrow="1" gap="2">
@@ -28,14 +27,16 @@ const ChatWidget = () => {
           direction="column"
           height={"100%"}
         >
-          {showCreateRoom && <CreateRoomForm setCurrentRoom={setCurrentRoom} 
-          setShowCreateRoom={setShowCreateRoom}
-          />}
+          {showCreateRoom && (
+            <CreateRoomForm
+              setCurrentRoom={setCurrentRoom}
+              setShowCreateRoom={setShowCreateRoom}
+            />
+          )}
         </Flex>
       </ScrollArea>
-      {currentRoom && <SendMessage roomname={currentRoom} />}
     </Flex>
   );
 };
 
-export default ChatWidget;
+export default RoomInterface;
