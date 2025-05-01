@@ -5,8 +5,8 @@ import { createContext, ReactNode, useContext, useState } from "react";
 interface ChatContextType {
   showCreateRoom: boolean;
   setShowCreateRoom: (show: boolean) => void;
-  activeRoom: string;
-  setActiveRoom: (roomId: string) => void;
+  activeRoom:string | null;
+  setActiveRoom: (roomId: string | null) => void;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
 }
@@ -28,7 +28,7 @@ export const useChatContext = () => {
 //wraping component with context provider
 const ChatContextProvider = ({ children }: { children: ReactNode }) => {
   const [showCreateRoom, setShowCreateRoom] = useState(false);
-  const [activeRoom, setActiveRoom] = useState("");
+  const [activeRoom, setActiveRoom] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const value: ChatContextType = {
