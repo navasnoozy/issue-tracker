@@ -1,16 +1,10 @@
 import { Button, Flex } from "@radix-ui/themes";
 import { CgCloseR } from "react-icons/cg";
 
-interface Props {
-  showCreateRoomForm: ShowCreateRoomProps;
-}
 
-interface ShowCreateRoomProps {
-  showCreateRoom: boolean;
-  setShowCreateRoom: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
-const TopPanel = ({ showCreateRoomForm }: Props) => {
+
+const TopPanel = () => {
   const { showCreateRoom, setShowCreateRoom } = showCreateRoomForm;
 
   return (

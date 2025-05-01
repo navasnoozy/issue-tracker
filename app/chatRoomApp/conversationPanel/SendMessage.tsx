@@ -7,11 +7,9 @@ import { useForm } from "react-hook-form";
 import { IoMdSend } from "react-icons/io";
 import { MdMessage } from "react-icons/md";
 
-interface Props {
-  roomname: string;
-}
 
-const SendMessage = ({ roomname }: Props) => {
+
+const SendMessage = () => {
   const { register, handleSubmit, reset } = useForm();
   const { data: session } = useSession();
 

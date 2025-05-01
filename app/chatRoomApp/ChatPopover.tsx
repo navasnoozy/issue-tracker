@@ -8,7 +8,6 @@ import NoAccess from "./elements/NoAccess";
 import { useSession } from "next-auth/react";
 
 const ChatPopover = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const initialize = useRef(true);
   const { status } = useSession();
 

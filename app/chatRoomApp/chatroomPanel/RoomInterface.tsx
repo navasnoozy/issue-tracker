@@ -11,12 +11,11 @@ import TopPanel from "../TopPanel";
 import ChatInterface from "../conversationPanel/ChatInterface";
 
 const RoomInterface = () => {
-  const [showCreateRoom, setShowCreateRoom] = useState(false);
-  const [currentRoom, setCurrentRoom] = useState("");
+
 
   return (
     <Flex direction="column" flexGrow="1" gap="2">
-      <TopPanel showCreateRoomForm={{ showCreateRoom, setShowCreateRoom }} />
+      <TopPanel  />
       <ScrollArea type="auto" scrollbars="vertical" style={{ height: "60vh" }}>
         <Flex
           style={{ background: "#FCFCFC" }}

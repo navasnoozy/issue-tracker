@@ -6,22 +6,10 @@ import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-interface Props {
-    setCurrentRoom: React.Dispatch<React.SetStateAction<string>>;
-    setShowCreateRoom:React.Dispatch<React.SetStateAction<boolean>>;
-}
-interface CreateRoomResponse {
-  success: boolean;
-  roomname?: string;
-  error?: string;
-}
 
-type Response = {
-    success:boolean;
-    statusText:string
-}
 
-const CreateRoomForm = ({ setCurrentRoom, setShowCreateRoom }: Props) => {
+
+const CreateRoomForm = () => {
   const { register, handleSubmit } = useForm();
   const {data:session} = useSession()
 
