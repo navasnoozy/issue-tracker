@@ -2,9 +2,9 @@
 
 import { Button, Card, Flex } from "@radix-ui/themes";
 import { AiOutlineHome } from "react-icons/ai";
-import { IoMdClose } from "react-icons/io";
 import { useChatContext } from "../components/chatContext/ChatContextProvider";
 import CloseButton from "../components/elements/CloseButton";
+
 
 const TopPanel = () => {
   const { showCreateRoom, setShowCreateRoom,activeRoom } = useChatContext();

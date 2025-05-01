@@ -5,7 +5,7 @@ import { Button, Flex, TextField } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useChatContext } from "../components/chatContext/ChatContextProvider";
+import { useChatContext } from "./chatContext/ChatContextProvider";
 
 type Response = {
   success: boolean;

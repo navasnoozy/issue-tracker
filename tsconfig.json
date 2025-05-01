@@ -31,8 +31,8 @@
     "app/auth/components/verifyEmailTemplate.js",
     "app/api/users/emailVerification",
     "server/socket.js",
-    "server/server.ts"
-, "app/chatRoomApp/ChatContainer.tsx"  ],
+    "server/server.ts",
+    "app/chatroomapp/ChatContainer.tsx"
+  ],
   "exclude": ["node_modules"]
 }
-

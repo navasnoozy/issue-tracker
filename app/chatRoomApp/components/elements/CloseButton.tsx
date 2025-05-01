@@ -3,22 +3,27 @@ import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import { ReactNode } from "react";
 import { useChatContext } from "../chatContext/ChatContextProvider";
+import { VisuallyHidden } from "radix-ui";
 
 const CloseButton = ({ children }: { children: ReactNode }) => {
-  const { isOpen, activeRoom,setActiveRoom,setShowCreateRoom } = useChatContext();
+  const { isOpen, activeRoom, setActiveRoom, setShowCreateRoom, setIsOpen } =
+    useChatContext();
   const { data: session } = useSession();
-  const useremail = session?.user?.email;
 
   const alertDialog = activeRoom ? "Leave room" : "Are you want to Close";
 
   const handleClick = () => {
     const socket = getSocket();
     setActiveRoom(null);
-    setShowCreateRoom(false)
+    setShowCreateRoom(false);
     if (activeRoom) {
-      socket?.emit("user-left", { activeRoom, useremail });
+      console.log("check is closebutton", activeRoom, session);
+
+      socket?.emit("user-left", { activeRoom, session });
+      return;
     }
     socket?.disconnect();
+    setIsOpen(false);
   };
   return (
     <AlertDialog.Root>
@@ -32,7 +37,11 @@ const CloseButton = ({ children }: { children: ReactNode }) => {
         className="!fixed bottom-[40vh] right-18 "
       >
         <AlertDialog.Title size="3">{alertDialog}</AlertDialog.Title>
-
+        <VisuallyHidden.Root>
+          <AlertDialog.Description size="2">
+            this hidden: maintain for accessibility
+          </AlertDialog.Description>
+        </VisuallyHidden.Root>
         <Flex gap="3" mt="4" justify="between">
           <AlertDialog.Cancel>
             <Button size="2" variant="soft" color="gray">
