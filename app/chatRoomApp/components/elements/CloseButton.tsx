@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 import { useChatContext } from "../chatContext/ChatContextProvider";
 
 const CloseButton = ({ children }: { children: ReactNode }) => {
-  const { isOpen, activeRoom,setActiveRoom } = useChatContext();
+  const { isOpen, activeRoom,setActiveRoom,setShowCreateRoom } = useChatContext();
   const { data: session } = useSession();
   const useremail = session?.user?.email;
 
@@ -13,7 +13,8 @@ const CloseButton = ({ children }: { children: ReactNode }) => {
 
   const handleClick = () => {
     const socket = getSocket();
-    setActiveRoom(null)
+    setActiveRoom(null);
+    setShowCreateRoom(false)
     if (activeRoom) {
       socket?.emit("user-left", { activeRoom, useremail });
     }
