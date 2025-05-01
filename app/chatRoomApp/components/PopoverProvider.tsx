@@ -1,17 +1,18 @@
+//app/chatRoomApp/components/PopoverProviderchatApp.tsx
+
 "use client";
 
-import { Button, Box, Popover } from "@radix-ui/themes";
-import RoomInterface from "./chatroomPanel/RoomInterface";
-import { useEffect, useRef, useState } from "react";
 import getSocket from "@/lib/socket";
-import NoAccess from "./elements/NoAccess";
+import { Box, Button, Popover } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
+import { ReactNode, useEffect, useRef } from "react";
 import { useChatContext } from "./chatContext/ChatContextProvider";
+import NoAccess from "./elements/NoAccess";
 
-const ChatPopover = () => {
+const PopoverProvider = ({ children }: { children: ReactNode }) => {
   const initialize = useRef(true);
   const { status } = useSession();
-  const {isOpen,setIsOpen} = useChatContext()
+  const { isOpen, setIsOpen ,currentRoom } = useChatContext();
 
   const handleTongle = (open: boolean) => {
     setIsOpen(open);
@@ -46,21 +47,21 @@ const ChatPopover = () => {
     >
       <Popover.Root open={isOpen} onOpenChange={(open) => handleTongle(open)}>
         <Popover.Trigger>
-          <Button className="!rounded-full" size={{ initial: "3", md: "4" }}>
+          <Button disabled={!!currentRoom} className="!rounded-full" size={{ initial: "3", md: "4" }}>
             Chat Rooms
           </Button>
         </Popover.Trigger>
 
         <Popover.Content
           width="360px"
-          minHeight="50vh"
-          style={{ display: "flex" }}
+          minHeight="60vh"
+          style={{ display: "flex", flexDirection:'column', gap:'8px' }}
         >
-          <RoomInterface />
+          {children}
         </Popover.Content>
       </Popover.Root>
     </Box>
   );
 };
 
-export default ChatPopover;
+export default PopoverProvider;

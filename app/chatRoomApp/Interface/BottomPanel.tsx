@@ -6,14 +6,14 @@ import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { IoMdSend } from "react-icons/io";
 import { MdMessage } from "react-icons/md";
-import { useChatContext } from "../chatContext/ChatContextProvider";
+import { useChatContext } from "../components/chatContext/ChatContextProvider";
 
 
-
-const SendMessage = () => {
+//SEND MESSAGE FORM
+const BottomPanel = () => {
   const { register, handleSubmit, reset } = useForm();
   const { data: session } = useSession();
-  const {currentRoom} = useChatContext ()
+  const { currentRoom } = useChatContext();
 
   const submit = handleSubmit(({ messageText }) => {
     const socket = getSocket();
@@ -21,6 +21,8 @@ const SendMessage = () => {
     socket?.emit("message", { currentRoom, messageText, session });
     reset();
   });
+
+  if (!currentRoom) return null
 
   return (
     <form onSubmit={submit}>
@@ -42,4 +44,4 @@ const SendMessage = () => {
   );
 };
 
-export default SendMessage;
+export default BottomPanel;

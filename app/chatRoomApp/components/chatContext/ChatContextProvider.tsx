@@ -1,3 +1,4 @@
+'use client'
 import { createContext, ReactNode, useContext, useState } from "react";
 
 //Context type
@@ -18,7 +19,7 @@ export const useChatContext = () => {
   const context = useContext(ChatContext);
 
   if (context === undefined) {
-    throw new Error("chatContext is not provided");
+    throw new Error("useChatContext must be used within a ChatContextProvider");
   }
 
   return context;

@@ -4,12 +4,13 @@ import "@radix-ui/themes/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import AuthProvider from "./auth/AuthProvider";
-import ChatPopover from "./chatRoomApp/ChatPopover";
+import PopoverProvider from "./chatRoomApp/components/PopoverProvider";
 import NavBar from "./components/navbar/NavBar";
 import "./globals.css";
 import QueryClientProvider from "./QueryClientProvider";
 import { Toaster } from "react-hot-toast";
 import { toastSetting } from "./utils/toastSettings";
+import ChatApp from "./chatRoomApp/ChatApp";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -36,7 +37,7 @@ export default function RootLayout({
                   </div>
                 </main>
               </div>
-              <ChatPopover />
+              <ChatApp />
               <Toaster position="top-right" toastOptions={toastSetting} />
             </Theme>
           </AuthProvider>
