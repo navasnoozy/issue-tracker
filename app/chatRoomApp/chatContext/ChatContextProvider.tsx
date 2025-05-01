@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from "react"
+import { createContext, ReactNode, useContext, useState } from "react";
 
 //Context type
 interface ChatContextType {
@@ -11,41 +11,35 @@ interface ChatContextType {
 }
 
 //create context
-const ChatContext = createContext<ChatContextType | undefined> (undefined)
+const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 //creating custom hook
-export const useChatContext = ()=>{
-  const context = useContext (ChatContext);
+export const useChatContext = () => {
+  const context = useContext(ChatContext);
 
-  if (context === undefined){
-    throw new Error ('chatContext is not provided')
+  if (context === undefined) {
+    throw new Error("chatContext is not provided");
   }
 
-  return context
-}
-
+  return context;
+};
 
 //wraping component with context provider
-const ChatContextProvider = ({children}:{children:ReactNode}) => {
-    const [showCreateRoom, setShowCreateRoom] = useState(false);
-    const [currentRoom, setCurrentRoom] = useState("");
-      const [isOpen, setIsOpen] = useState(false);
+const ChatContextProvider = ({ children }: { children: ReactNode }) => {
+  const [showCreateRoom, setShowCreateRoom] = useState(false);
+  const [currentRoom, setCurrentRoom] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
-   const value : ChatContextType = {
+  const value: ChatContextType = {
     showCreateRoom,
     setShowCreateRoom,
     currentRoom,
     setCurrentRoom,
     isOpen,
-    setIsOpen
-   }
+    setIsOpen,
+  };
 
-  return (
-    <ChatContext.Provider value={value}>
-    {children}
-    </ChatContext.Provider>
+  return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
+};
 
-  )
-}
-
-export default ChatContextProvider
+export default ChatContextProvider;

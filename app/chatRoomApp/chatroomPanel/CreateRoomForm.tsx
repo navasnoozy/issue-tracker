@@ -5,13 +5,18 @@ import { Button, Flex, TextField } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useChatContext } from "../chatContext/ChatContextProvider";
 
 
-
+type Response = {
+  success:boolean;
+  statusText:string
+}
 
 const CreateRoomForm = () => {
   const { register, handleSubmit } = useForm();
-  const {data:session} = useSession()
+  const {data:session} = useSession();
+  const {setCurrentRoom,setShowCreateRoom} = useChatContext();
 
   let socket = getSocket();
 

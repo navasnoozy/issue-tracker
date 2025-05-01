@@ -6,10 +6,12 @@ import { useEffect, useRef, useState } from "react";
 import getSocket from "@/lib/socket";
 import NoAccess from "./elements/NoAccess";
 import { useSession } from "next-auth/react";
+import { useChatContext } from "./chatContext/ChatContextProvider";
 
 const ChatPopover = () => {
   const initialize = useRef(true);
   const { status } = useSession();
+  const {isOpen,setIsOpen} = useChatContext()
 
   const handleTongle = (open: boolean) => {
     setIsOpen(open);
