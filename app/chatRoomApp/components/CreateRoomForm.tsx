@@ -15,7 +15,7 @@ type Response = {
 const CreateRoomForm = () => {
   const { register, handleSubmit } = useForm();
   const { data: session } = useSession();
-  const { setCurrentRoom, setShowCreateRoom } = useChatContext();
+  const { setActiveRoom, setShowCreateRoom } = useChatContext();
 
   let socket = getSocket();
 
@@ -23,7 +23,7 @@ const CreateRoomForm = () => {
     socket?.emit("createRoom", { roomname, session }, (res: Response) => {
       if (res.success) {
         toast.success(res.statusText);
-        setCurrentRoom(roomname);
+        setActiveRoom(roomname);
         setShowCreateRoom(false);
       } else {
         toast.error(res.statusText);

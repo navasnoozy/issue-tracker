@@ -13,16 +13,16 @@ import { useChatContext } from "../components/chatContext/ChatContextProvider";
 const BottomPanel = () => {
   const { register, handleSubmit, reset } = useForm();
   const { data: session } = useSession();
-  const { currentRoom } = useChatContext();
+  const {  activeRoom } = useChatContext();
 
   const submit = handleSubmit(({ messageText }) => {
     const socket = getSocket();
 
-    socket?.emit("message", { currentRoom, messageText, session });
+    socket?.emit("message", { currentRoom: activeRoom, messageText, session });
     reset();
   });
 
-  if (!currentRoom) return null
+  if (!activeRoom) return null
 
   return (
     <form onSubmit={submit}>

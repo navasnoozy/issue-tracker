@@ -8,7 +8,7 @@ import ChatRooms from "../components/ChatRooms";
 import Messages from "../components/Messages";
 
 const MidPanel = () => {
-  const { showCreateRoom, currentRoom } = useChatContext();
+  const { showCreateRoom,  activeRoom } = useChatContext();
 
   return (
     <Flex direction="column" flexGrow="1" gap="2">
@@ -22,7 +22,7 @@ const MidPanel = () => {
           direction="column"
           height={"100%"}
         >
-        {currentRoom ? <Messages /> : showCreateRoom ? <CreateRoomForm /> : <ChatRooms />}
+        {activeRoom ? <Messages /> : showCreateRoom ? <CreateRoomForm /> : <ChatRooms />}
         </Flex>
       </ScrollArea>
     </Flex>

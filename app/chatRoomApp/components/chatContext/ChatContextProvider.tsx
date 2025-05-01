@@ -1,12 +1,12 @@
-'use client'
+"use client";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 //Context type
 interface ChatContextType {
   showCreateRoom: boolean;
   setShowCreateRoom: (show: boolean) => void;
-  currentRoom: string;
-  setCurrentRoom: (roomId: string) => void;
+  activeRoom: string;
+  setActiveRoom: (roomId: string) => void;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
 }
@@ -28,14 +28,14 @@ export const useChatContext = () => {
 //wraping component with context provider
 const ChatContextProvider = ({ children }: { children: ReactNode }) => {
   const [showCreateRoom, setShowCreateRoom] = useState(false);
-  const [currentRoom, setCurrentRoom] = useState("");
+  const [activeRoom, setActiveRoom] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const value: ChatContextType = {
     showCreateRoom,
     setShowCreateRoom,
-    currentRoom,
-    setCurrentRoom,
+    activeRoom,
+    setActiveRoom,
     isOpen,
     setIsOpen,
   };

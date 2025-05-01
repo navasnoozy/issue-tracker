@@ -7,16 +7,16 @@ import { useChatContext } from "../components/chatContext/ChatContextProvider";
 import CloseButton from "../components/elements/CloseButton";
 
 const TopPanel = () => {
-  const { showCreateRoom, setShowCreateRoom, currentRoom } = useChatContext();
+  const { showCreateRoom, setShowCreateRoom,activeRoom } = useChatContext();
 
-  if (currentRoom)
+  if (activeRoom)
     return (
       <Card>
         <Flex justify={"between"}>
           <Flex align={"center"} className="text-green-500 gap-1">
             {" "}
             <AiOutlineHome />
-            {currentRoom.toUpperCase()}
+            {activeRoom.toUpperCase()}
           </Flex>
           <Flex align={"center"} className="text-green-500">
             <CloseButton>Leave</CloseButton>
@@ -33,7 +33,7 @@ const TopPanel = () => {
           variant="outline"
           onClick={() => setShowCreateRoom(!showCreateRoom)}
         >
-          {showCreateRoom ? "Room List" : "Create New Room"}
+          {showCreateRoom ? "Room List" : "New Room"}
         </Button>
         <CloseButton>Close</CloseButton>
       </Flex>

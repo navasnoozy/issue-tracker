@@ -12,7 +12,7 @@ import NoAccess from "./elements/NoAccess";
 const PopoverProvider = ({ children }: { children: ReactNode }) => {
   const initialize = useRef(true);
   const { status } = useSession();
-  const { isOpen, setIsOpen ,currentRoom } = useChatContext();
+  const { isOpen, setIsOpen ,activeRoom } = useChatContext();
 
   const handleTongle = (open: boolean) => {
     setIsOpen(open);
@@ -47,7 +47,7 @@ const PopoverProvider = ({ children }: { children: ReactNode }) => {
     >
       <Popover.Root open={isOpen} onOpenChange={(open) => handleTongle(open)}>
         <Popover.Trigger>
-          <Button disabled={!!currentRoom} className="!rounded-full" size={{ initial: "3", md: "4" }}>
+          <Button disabled={!!activeRoom} className="!rounded-full" size={{ initial: "3", md: "4" }}>
             Chat Rooms
           </Button>
         </Popover.Trigger>
