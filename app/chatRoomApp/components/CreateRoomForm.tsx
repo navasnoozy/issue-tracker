@@ -7,17 +7,17 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useChatContext } from "./chatContext/ChatContextProvider";
 
-type Response = {
+export type Response = {
   success: boolean;
   statusText: string;
 };
-
+ 
 const CreateRoomForm = () => {
   const { register, handleSubmit } = useForm();
   const { data: session } = useSession();
   const { setActiveRoom, setShowCreateRoom } = useChatContext();
 
-  let socket = getSocket();
+const socket = getSocket();
 
   const submit = handleSubmit(({ roomname }) => {
     socket?.emit("createRoom", { roomname, session }, (res: Response) => {

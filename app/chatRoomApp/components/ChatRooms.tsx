@@ -4,6 +4,8 @@ import { Button, Card, Text } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useChatContext } from "./chatContext/ChatContextProvider";
+import { Response } from "./CreateRoomForm";
+import toast from "react-hot-toast";
 
 interface Props {
   setCurrentRoom: React.Dispatch<React.SetStateAction<string>>;
@@ -11,13 +13,21 @@ interface Props {
 
 const ChatRooms = () => {
   const { data: session } = useSession();
-  const { setCurrentRoom } = useChatContext();
-  const [roomsList, setRoomsList] = useState(["Public room"]);
+  const { setActiveRoom, setShowCreateRoom } = useChatContext();
+  const [roomsList, setRoomsList] = useState<string[]>([]);
 
   const socket = getSocket();
 
-  const handleClick = (room: string) => {
-    socket?.emit("createRoom", { room, session });
+  const handleClick = (roomname: string) => {
+    socket?.emit("createRoom", { roomname, session }, (res: Response) => {
+      if (res.success) {
+        toast.success(res.statusText);
+        setActiveRoom(roomname);
+        setShowCreateRoom(false);
+      } else {
+        toast.error(res.statusText);
+      }
+    });
   };
 
   useEffect(() => {

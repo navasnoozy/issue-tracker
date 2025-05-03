@@ -76,6 +76,11 @@ export function setUpSocketServer(httpServer: HttpServer) {
     console.log(`User ${socket.id} connection established`);
 
     /**
+     * Update Room list - specifically for public room
+     */
+    io.emit("getRoomsList", [...chatRooms.keys()]);
+
+    /**
      * Room Events
      */
     socket.on("createRoom", handleRoomCreation(socket, io));
@@ -99,35 +104,13 @@ export function setUpSocketServer(httpServer: HttpServer) {
       // Check if this user was in a room
       const userData = userSessions.get(socket.id);
       if (userData) {
-        const { roomname, session } = userData;
+        // Use the existing handleUserLeaveRoom function
+        const handleLeave = handleUserLeaveRoom(socket, io);
+        handleLeave(userData);
         
-        // Remove user from tracking
-        userSessions.delete(socket.id);
-        
-        // Send notification to room
-        const username = session.user?.name || "User";
-        const leftNotification = MessageFactory.create(
-          session,
-          "notifi",
-          `${username} has left`
-        );
-        socket.to(roomname).emit("roomMessage", leftNotification);
-        
-        // Update room membership
-        const userEmail = session?.user?.email;
-        if (roomname && userEmail) {
-          const room = chatRooms.get(roomname);
-          if (room && room.has(userEmail)) {
-            room.delete(userEmail);
-          }
-          
-          // If room is empty, consider removing it
-          if (room && room.size === 0) {
-            chatRooms.delete(roomname);
-          }
-          
-          // Update room list for all clients
-          io.emit("getRoomsList", [...chatRooms.keys()]);
+        // Remove user from tracking if not already done in handleUserLeaveRoom
+        if (userSessions.has(socket.id)) {
+          userSessions.delete(socket.id);
         }
       }
     });
@@ -200,16 +183,17 @@ function handleMessageSending(socket: Socket) {
 
 // HANDLE USER LEAVING ROOM (EXPLICIT LEAVE)
 function handleUserLeaveRoom(socket: Socket, io: Server) {
-  return ({ roomname, session }: SocketData) => {
+  return ({ roomname, session }: SocketData, isDisconnecting: boolean = false) => {
     if (!roomname || !session) return;
-    console.log('reached 11111 ///////////////////////');
     
     const userEmail = session?.user?.email;
     const username = session?.user?.name || "User";
 
-    // Remove user from socket room
-    socket.leave(roomname);
-    console.log('reached 22222 ///////////////////////');
+    // Only call socket.leave if not already disconnecting
+    if (!isDisconnecting) {
+      socket.leave(roomname);
+    }
+
     // Remove from tracking
     userSessions.delete(socket.id);
 
@@ -219,16 +203,16 @@ function handleUserLeaveRoom(socket: Socket, io: Server) {
       if (room && room.has(userEmail)) {
         room.delete(userEmail);
       }
-      console.log('reached 33333 ///////////////////////'); 
+
       // If room is empty, consider removing it
-      if (room && room.size === 0) {
+      if (room && room.size === 0 && roomname !== PUBLIC_ROOM ) {
         chatRooms.delete(roomname);
       }
-      console.log('reached 4444 ///////////////////////');
+
       // Update room list for all clients
       io.emit("getRoomsList", [...chatRooms.keys()]);
     }
-    console.log('reached 555555 ///////////////////////');
+
     // NOTIFY OTHERS THAT USER LEFT
     const leftNotification = MessageFactory.create(
       session,
@@ -241,7 +225,8 @@ function handleUserLeaveRoom(socket: Socket, io: Server) {
 
 // HANDLE CHAT ROOMS
 const chatRooms = new Map();
-
+const PUBLIC_ROOM = 'Public room'
+chatRooms.set(PUBLIC_ROOM, new Set())
 function handleChatRooms(roomname: string, userEmail: string, io: Server) {
   if (!chatRooms.has(roomname)) {
     chatRooms.set(roomname, new Set());
@@ -252,4 +237,5 @@ function handleChatRooms(roomname: string, userEmail: string, io: Server) {
   }
 
   io.emit("getRoomsList", [...chatRooms.keys()]);
-}
+};
+
