@@ -177,9 +177,7 @@ function handleRoomCreation(socket: Socket, io: Server) {
 // HANDLE MESSAGE SENDING EVENTS
 function handleMessageSending(socket: Socket) {
   return ({ roomname, messageText, session }: SocketData) => {
-    console.log(
-      `roomname- ${roomname}, mess: ${messageText},   sess ${session}`
-    );
+  
 
     if (!roomname || !messageText || !session) {
       console.error("Invalid message attempt: missing required data");

@@ -18,7 +18,7 @@ const BottomPanel = () => {
   const submit = handleSubmit(({ messageText }) => {
     const socket = getSocket();
 
-    socket?.emit("message", { currentRoom: activeRoom, messageText, session });
+    socket?.emit("message", { roomname: activeRoom, messageText, session });
     reset();
   });
 

@@ -1,5 +1,4 @@
 //app/chatRoomApp/chatApp.tsx
-
 "use client";
 
 import ChatContextProvider from "./components/chatContext/ChatContextProvider";

@@ -17,8 +17,6 @@ const CloseButton = ({ children }: { children: ReactNode }) => {
     setActiveRoom(null);
     setShowCreateRoom(false);
     if (activeRoom) {
-      console.log("check is closebutton", activeRoom, session);
-
       socket?.emit("user-left", { activeRoom, session });
       return;
     }
