@@ -17,7 +17,7 @@ const CloseButton = ({ children }: { children: ReactNode }) => {
     setActiveRoom(null);
     setShowCreateRoom(false);
     if (activeRoom) {
-      socket?.emit("user-left", { activeRoom, session });
+      socket?.emit("user-left", {roomname: activeRoom, session });
       return;
     }
     socket?.disconnect();
