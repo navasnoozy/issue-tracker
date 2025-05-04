@@ -13,9 +13,14 @@ const PopoverProvider = ({ children }: { children: ReactNode }) => {
   const initialize = useRef(true);
   const { status } = useSession();
   const { isOpen, setIsOpen ,activeRoom } = useChatContext();
+  console.log('value is open ',isOpen);
+  
 
-  const handleTongle = (open: boolean) => {
-    setIsOpen(open);
+    // prevent Radix auto-dismiss
+    const blockDismiss = (e: Event) => e.preventDefault();
+
+  const handleTongle = () => {
+    setIsOpen(true);
   };
 
   useEffect(() => {
@@ -45,7 +50,7 @@ const PopoverProvider = ({ children }: { children: ReactNode }) => {
       bottom="4" // 1rem = 16px (Tailwind scale: 4 = 16px)
       right="4"
     >
-      <Popover.Root open={isOpen} onOpenChange={(open) => handleTongle(open)}>
+      <Popover.Root open={isOpen} onOpenChange={() => handleTongle()}>
         <Popover.Trigger>
           <Button disabled={!!activeRoom} className="!rounded-full" size={{ initial: "3", md: "4" }}>
             Chat Rooms
