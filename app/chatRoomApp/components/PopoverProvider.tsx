@@ -13,7 +13,6 @@ const PopoverProvider = ({ children }: { children: ReactNode }) => {
   const initialize = useRef(true);
   const { status } = useSession();
   const { isOpen, setIsOpen ,activeRoom } = useChatContext();
-  console.log('value is open ',isOpen);
   
 
     // prevent Radix auto-dismiss
@@ -52,7 +51,7 @@ const PopoverProvider = ({ children }: { children: ReactNode }) => {
     >
       <Popover.Root open={isOpen} onOpenChange={() => handleTongle()}>
         <Popover.Trigger>
-          <Button disabled={!!activeRoom} className="!rounded-full" size={{ initial: "3", md: "4" }}>
+          <Button disabled={!!activeRoom.roomname} className="!rounded-full" size={{ initial: "3", md: "4" }}>
             Chat Rooms
           </Button>
         </Popover.Trigger>

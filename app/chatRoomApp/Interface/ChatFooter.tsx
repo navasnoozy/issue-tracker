@@ -19,17 +19,17 @@ const ChatFooter = () => {
   const submit = handleSubmit(({ messageText }) => {
     const socket = getSocket();
 
-    socket?.emit("message", { roomname: activeRoom, messageText, session });
+    socket?.emit("message", { roomname: activeRoom.roomname, messageText, session });
     reset();
   });
 
   useEffect(() => {
-    if (activeRoom) {
+    if (activeRoom.roomname) {
       setFocus("messageText");
     }
-  }, [activeRoom, setFocus]);
+  }, [activeRoom.roomname, setFocus]);
 
-  if (!activeRoom) return null;
+  if (!activeRoom.roomname) return null;
 
   return (
     <form onSubmit={submit}>

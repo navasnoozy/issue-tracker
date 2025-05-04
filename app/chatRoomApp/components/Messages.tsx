@@ -4,19 +4,19 @@ import getSocket from "@/lib/socket";
 import { Avatar, Box, Flex, Text } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { useChatContext } from "./chatContext/ChatContextProvider";
-import { MessageType } from "@/types/Message";
+import { MessageType } from "@/types/messageType";
 
 interface Props {
   isConnected: boolean;
 }
 
 const Messages = () => {
-  const {messages, setMessages}= useChatContext()
+  const { messages, setMessages } = useChatContext();
   useEffect(() => {
     const socket = getSocket();
 
     const handleRoomMessage = (message: MessageType) => {
-      setMessages((prev)=> [...prev,message]);
+      setMessages((prev) => [...prev, message]);
     };
 
     socket?.on("roomMessage", handleRoomMessage);

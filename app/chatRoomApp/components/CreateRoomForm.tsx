@@ -24,7 +24,7 @@ const socket = getSocket();
     socket?.emit("createRoom", { roomname, session }, (res: Response) => {
       if (res.success) {
         toast.success(res.statusText);
-        setActiveRoom(roomname);
+        setActiveRoom({roomname,userCount:0});
         setShowCreateRoom(false);
       } else {
         toast.error(res.statusText);

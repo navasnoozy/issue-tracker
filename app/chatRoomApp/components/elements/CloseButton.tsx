@@ -10,14 +10,14 @@ const CloseButton = ({ children }: { children: ReactNode }) => {
     useChatContext();
   const { data: session } = useSession();
 
-  const alertDialog = activeRoom ? "Leave room" : "Are you want to Close";
+  const alertDialog = activeRoom.roomname ? "Leave room" : "Are you want to Close";
 
   const handleClick = () => {
     const socket = getSocket();
-    setActiveRoom(null);
+    setActiveRoom({roomname:null,userCount:null});
     setShowCreateRoom(false);
-    if (activeRoom) {
-      socket?.emit("user-left", {roomname: activeRoom, session });
+    if (activeRoom.roomname) {
+      socket?.emit("user-left", {roomname: activeRoom.roomname, session });
       return;
     }
     socket?.disconnect();

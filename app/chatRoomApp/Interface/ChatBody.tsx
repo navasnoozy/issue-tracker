@@ -34,7 +34,7 @@ const Chatbody = () => {
           direction="column"
           height={"100%"}
         >
-          {activeRoom ? (
+          {activeRoom.roomname ? (
             <Messages />
           ) : showCreateRoom ? (
             <CreateRoomForm />

@@ -4,18 +4,32 @@ import { Button, Card, Flex } from "@radix-ui/themes";
 import { AiOutlineHome } from "react-icons/ai";
 import { useChatContext } from "../components/chatContext/ChatContextProvider";
 import CloseButton from "../components/elements/CloseButton";
+import { useEffect } from "react";
+import getSocket from "@/lib/socket";
 
 const ChatNavbar = () => {
-  const { showCreateRoom, setShowCreateRoom, activeRoom } = useChatContext();
+  const { showCreateRoom, setShowCreateRoom, activeRoom, setActiveRoom } = useChatContext();
+  
 
-  if (activeRoom)
+  useEffect(()=>{
+    const socket = getSocket();
+    socket?.on('roomUserCount', (count:number)=>{
+      setActiveRoom((prev)=> ({...prev, userCount:count}))
+    });
+
+    return ()=> {
+      socket?.off('roomUserCount')
+    }
+  },[])
+
+  if (activeRoom.roomname)
     return (
       <Card>
         <Flex justify={"between"}>
           <Flex align={"center"} className="text-green-500 gap-1">
             {" "}
             <AiOutlineHome />
-            {activeRoom.toUpperCase()}
+            {activeRoom.roomname?.toUpperCase()}
           </Flex>
           <Flex align={"center"} className="text-green-500">
             <CloseButton>Leave</CloseButton>
