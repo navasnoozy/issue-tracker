@@ -9,7 +9,7 @@ import NavBar from "./components/navbar/NavBar";
 import "./globals.css";
 import QueryClientProvider from "./QueryClientProvider";
 import { Toaster } from "react-hot-toast";
-import { toastSetting } from "./utils/toastSettings";
+import { toastSetting } from "../utils/toastSettings";
 import ChatApp from "./chatroomapp/ChatApp";
 
 const inter = Inter({

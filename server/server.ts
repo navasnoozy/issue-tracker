@@ -2,7 +2,7 @@
 
 import next from "next";
 import { createServer } from "node:http";
-import { setUpSocketServer } from "./socket";
+import { setUpSocketServer } from "./socket/socket";
 
 const dev = process.env.NODE_ENV !== "production";
 const port = parseInt(process.env.PORT || "3000", 10);
