@@ -26,6 +26,7 @@ const ChatContextProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const portalRef = useRef(null);
 
   const value: ChatContextType = {
     showCreateRoom,
@@ -37,6 +38,7 @@ const ChatContextProvider = ({ children }: { children: ReactNode }) => {
     scrollRef,
     messages,
     setMessages,
+    portalRef
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

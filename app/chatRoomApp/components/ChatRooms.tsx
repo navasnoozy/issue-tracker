@@ -46,13 +46,17 @@ const ChatRooms = () => {
         return (
           <Card
             key={name}
-            className="!flex !justify-between !items-center !gap-2"
+            className="!flex !justify-between !items-center !text-gray-500 !gap-2"
           >
-            <Flex width={'130px'} wrap={'nowrap'}  className="!items-center !gap-2">
+            <Flex
+              width={"130px"}
+              wrap={"nowrap"}
+              className="!items-center !gap-2"
+            >
               <AiOutlineHome />
               {name}
             </Flex>
-            <Flex  className="!justify-between !items-center !gap-2">
+            <Flex className="!justify-between !items-center !gap-2">
               <HiOutlineUsers />
               {count}
             </Flex>

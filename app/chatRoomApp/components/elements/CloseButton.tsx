@@ -1,59 +1,80 @@
 import getSocket from "@/lib/socket";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 import { useChatContext } from "../chatContext/ChatContextProvider";
 import { VisuallyHidden } from "radix-ui";
 
-const CloseButton = ({ children }: { children: ReactNode }) => {
-  const { isOpen, activeRoom, setActiveRoom, setShowCreateRoom, setIsOpen } =
+type CloseButtonProps = {
+  children: ReactNode;
+};
+
+const CloseButton = ({ children }: CloseButtonProps) => {
+  const { activeRoom, setActiveRoom, setShowCreateRoom, setIsOpen, portalRef } =
     useChatContext();
   const { data: session } = useSession();
 
-  const alertDialog = activeRoom.roomname ? "Leave room" : "Are you want to Close";
 
-  const handleClick = () => {
-    const socket = getSocket();
-    setActiveRoom({roomname:null,userCount:null});
-    setShowCreateRoom(false);
-    if (activeRoom.roomname) {
-      socket?.emit("user-left", {roomname: activeRoom.roomname, session });
-      return;
+  // Determine the type of action and related text based on current state
+  const isInRoom = Boolean(activeRoom.roomname);
+  const dialogTitle = isInRoom ? "Leave Room" : "Close Chat";
+  const dialogDescription = isInRoom
+    ? "Are you sure you want to leave this room?"
+    : "Are you sure you want to close the chat?";
+
+  const handleConfirm = () => {
+    if (isInRoom) {
+      // Handle leaving a room
+      const socket = getSocket();
+      socket?.emit("user-left", {
+        roomname: activeRoom.roomname,
+        session,
+      });
+      setActiveRoom({ roomname: null, userCount: null });
+      setShowCreateRoom(false);
+    } else {
+      // Handle closing the chat window
+      setIsOpen(false);
     }
-    socket?.disconnect();
-    setIsOpen(false);
   };
+
   return (
-    <AlertDialog.Root>
-      <AlertDialog.Trigger>
-        <Button size="2" variant="outline" color="red">
-          {children}
-        </Button>
-      </AlertDialog.Trigger>
-      <AlertDialog.Content
-        maxWidth="250px"
-        className="!fixed bottom-[40vh] right-18 "
-      >
-        <AlertDialog.Title size="3">{alertDialog}</AlertDialog.Title>
-        <VisuallyHidden.Root>
+  
+      <AlertDialog.Root>
+        <AlertDialog.Trigger>
+          <Button size="2" variant="outline" color="red">
+            {children}
+          </Button>
+        </AlertDialog.Trigger>
+        <AlertDialog.Content
+          align="center"
+          maxWidth="300px"
+          container={portalRef.current}
+        >
+          <AlertDialog.Title size="3">{dialogTitle}</AlertDialog.Title>
           <AlertDialog.Description size="2">
-            this hidden: maintain for accessibility
+            {dialogDescription}
           </AlertDialog.Description>
-        </VisuallyHidden.Root>
-        <Flex gap="3" mt="4" justify="between">
-          <AlertDialog.Cancel>
-            <Button size="2" variant="soft" color="gray">
-              Cancel
-            </Button>
-          </AlertDialog.Cancel>
-          <AlertDialog.Action>
-            <Button size="2" variant="solid" color="red" onClick={handleClick}>
-              Confirm
-            </Button>
-          </AlertDialog.Action>
-        </Flex>
-      </AlertDialog.Content>
-    </AlertDialog.Root>
+          <Flex gap="3" mt="4" justify="between">
+            <AlertDialog.Cancel>
+              <Button size="2" variant="soft" color="gray">
+                Cancel
+              </Button>
+            </AlertDialog.Cancel>
+            <AlertDialog.Action>
+              <Button
+                size="2"
+                variant="solid"
+                color="red"
+                onClick={handleConfirm}
+              >
+                Confirm
+              </Button>
+            </AlertDialog.Action>
+          </Flex>
+        </AlertDialog.Content>
+      </AlertDialog.Root>
+
   );
 };
 

@@ -8,7 +8,7 @@ import Messages from "../components/Messages";
 import { useEffect, useRef } from "react";
 
 const Chatbody = () => {
-  const { messages, showCreateRoom, activeRoom, scrollRef } = useChatContext();
+  const { messages, showCreateRoom, activeRoom, scrollRef, portalRef } = useChatContext();
 
   useEffect(() => {
     const scrollElement = scrollRef?.current;
@@ -33,6 +33,7 @@ const Chatbody = () => {
           gap="2"
           direction="column"
           height={"100%"}
+          ref={portalRef}
         >
           {activeRoom.roomname ? (
             <Messages />

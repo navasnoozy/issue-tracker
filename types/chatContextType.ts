@@ -17,4 +17,5 @@ export interface ChatContextType {
   scrollRef: RefObject<HTMLDivElement | null>;
   messages: MessageType[];
   setMessages: Dispatch<SetStateAction<MessageType[]>>;
+  portalRef: RefObject<HTMLDivElement | null>
 }

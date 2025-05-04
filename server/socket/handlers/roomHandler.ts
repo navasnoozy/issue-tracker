@@ -1,12 +1,15 @@
 import { Socket, Server } from "socket.io";
 import { MessageFactory } from "../services/MessageFactory";
-import { chatRooms, handleChatRooms, PUBLIC_ROOM, roomTable } from "../services/RoomService";
-import { userSessions } from "./connectionHandler";
+import {
+  chatRooms,
+  addToChatRoomTracker,
+  PUBLIC_ROOM,
+  roomUsersCount,
+  removeFromChatRoomTracker,
+} from "../services/RoomService";
 import { SocketData } from "@/types/socket.types";
 
-
-
-// Handle room creation events
+// HANDLE ROOM CREATION or JOINING ROOM EVENTS
 export function handleRoomCreation(socket: Socket, io: Server) {
   return ({ roomname, session }: SocketData, callback: Function) => {
     if (!roomname || !session) {
@@ -21,10 +24,11 @@ export function handleRoomCreation(socket: Socket, io: Server) {
     socket.join(roomname);
     const username = session.user?.name || "User";
 
-    // Store user session data for disconnect handling
-    userSessions.set(socket.id, { roomname, session });
+    //saving user data from unexpected disconnection
+    socket.data.userEmail = session.user?.email
+    socket.data.roomname = roomname
 
-    handleChatRooms(roomname, session.user?.email || "anonymous", io);
+    addToChatRoomTracker(roomname, session.user?.email || "anonymous", io);
 
     callback({ success: true, statusText: "Room Successfully created" });
 
@@ -48,38 +52,17 @@ export function handleRoomCreation(socket: Socket, io: Server) {
 
 // HANDLE USER LEAVING ROOM (EXPLICIT LEAVE)
 export function handleUserLeaveRoom(socket: Socket, io: Server) {
-  return (
-    { roomname, session }: SocketData,
-    isDisconnecting: boolean = false
-  ) => {
+  return ({ roomname, session }: SocketData) => {
     if (!roomname || !session) return;
 
-    const userEmail = session?.user?.email;
+    const userEmail = session.user?.email;
     const username = session?.user?.name || "User";
 
     // Only call socket.leave if not already disconnecting
-    if (!isDisconnecting) {
-      socket.leave(roomname);
-    }
 
-    // Remove from tracking
-    userSessions.delete(socket.id);
+    socket.leave(roomname);
 
-    // Update room membership
-    if (userEmail) {
-      const room = chatRooms.get(roomname);
-      if (room && room.has(userEmail)) {
-        room.delete(userEmail);
-      }
-
-      // If room is empty, consider removing it
-      if (room && room.size === 0 && roomname !== PUBLIC_ROOM) {
-        chatRooms.delete(roomname);
-      }
-
-      // Update room list for all clients
-      io.emit("getRoomsList", [...roomTable]);
-    }
+    removeFromChatRoomTracker(roomname, userEmail, io);
 
     // NOTIFY OTHERS THAT USER LEFT
     const leftNotification = MessageFactory.create(
