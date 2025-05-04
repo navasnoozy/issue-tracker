@@ -1,13 +1,12 @@
-//app/chatRoomApp/Interface/TopPanel.tsx
+//app/chatRoomApp/Interface/ChatNavbar.tsx
 
 import { Button, Card, Flex } from "@radix-ui/themes";
 import { AiOutlineHome } from "react-icons/ai";
 import { useChatContext } from "../components/chatContext/ChatContextProvider";
 import CloseButton from "../components/elements/CloseButton";
 
-
-const TopPanel = () => {
-  const { showCreateRoom, setShowCreateRoom,activeRoom } = useChatContext();
+const ChatNavbar = () => {
+  const { showCreateRoom, setShowCreateRoom, activeRoom } = useChatContext();
 
   if (activeRoom)
     return (
@@ -41,4 +40,4 @@ const TopPanel = () => {
   );
 };
 
-export default TopPanel;
+export default ChatNavbar;

@@ -1,3 +1,4 @@
+// app/chatroomapp/interface/Chatfooer.tsx
 "use client";
 
 import getSocket from "@/lib/socket";
@@ -7,13 +8,13 @@ import { useForm } from "react-hook-form";
 import { IoMdSend } from "react-icons/io";
 import { MdMessage } from "react-icons/md";
 import { useChatContext } from "../components/chatContext/ChatContextProvider";
-
+import { useEffect } from "react";
 
 //SEND MESSAGE FORM
-const BottomPanel = () => {
-  const { register, handleSubmit, reset } = useForm();
+const ChatFooter = () => {
+  const { register, handleSubmit, setFocus, reset } = useForm();
   const { data: session } = useSession();
-  const {  activeRoom } = useChatContext();
+  const { activeRoom } = useChatContext();
 
   const submit = handleSubmit(({ messageText }) => {
     const socket = getSocket();
@@ -22,7 +23,13 @@ const BottomPanel = () => {
     reset();
   });
 
-  if (!activeRoom) return null
+  useEffect(() => {
+    if (activeRoom) {
+      setFocus("messageText");
+    }
+  }, [activeRoom, setFocus]);
+
+  if (!activeRoom) return null;
 
   return (
     <form onSubmit={submit}>
@@ -44,4 +51,4 @@ const BottomPanel = () => {
   );
 };
 
-export default BottomPanel;
+export default ChatFooter;

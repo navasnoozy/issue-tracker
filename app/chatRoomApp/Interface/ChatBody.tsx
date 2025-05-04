@@ -1,14 +1,13 @@
-//app/chatApp/ChatWidget.tsx file
+//app/chatroomapp/interface/chatbody.tsx
 "use client";
 import { Flex, ScrollArea } from "@radix-ui/themes";
 import { useChatContext } from "../components/chatContext/ChatContextProvider";
-import TopPanel from "./TopPanel";
-import CreateRoomForm from "../components/CreateRoomForm";
 import ChatRooms from "../components/ChatRooms";
+import CreateRoomForm from "../components/CreateRoomForm";
 import Messages from "../components/Messages";
 
-const MidPanel = () => {
-  const { showCreateRoom,  activeRoom } = useChatContext();
+const Chatbody = () => {
+  const { showCreateRoom, activeRoom } = useChatContext();
 
   return (
     <Flex direction="column" flexGrow="1" gap="2">
@@ -22,11 +21,17 @@ const MidPanel = () => {
           direction="column"
           height={"100%"}
         >
-        {activeRoom ? <Messages /> : showCreateRoom ? <CreateRoomForm /> : <ChatRooms />}
+          {activeRoom ? (
+            <Messages />
+          ) : showCreateRoom ? (
+            <CreateRoomForm />
+          ) : (
+            <ChatRooms />
+          )}
         </Flex>
       </ScrollArea>
     </Flex>
   );
 };
 
-export default MidPanel;
+export default Chatbody;

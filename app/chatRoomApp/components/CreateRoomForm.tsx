@@ -1,4 +1,4 @@
-//app/chatApp/CreateRoomForm.tsx file
+//app/chatroomapp/components/CreateRoomForm.tsx file
 "use client";
 import getSocket from "@/lib/socket";
 import { Button, Flex, TextField } from "@radix-ui/themes";
@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useChatContext } from "./chatContext/ChatContextProvider";
+import { useEffect } from "react";
 
 export type Response = {
   success: boolean;
@@ -13,7 +14,7 @@ export type Response = {
 };
  
 const CreateRoomForm = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit,setFocus } = useForm();
   const { data: session } = useSession();
   const { setActiveRoom, setShowCreateRoom } = useChatContext();
 
@@ -30,6 +31,11 @@ const socket = getSocket();
       }
     });
   });
+  
+
+  useEffect (()=>{
+    setFocus('roomname')
+  },[])
 
   return (
     <form className="!flex !flex-col !justify-center !h-full" onSubmit={submit}>
