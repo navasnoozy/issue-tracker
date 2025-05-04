@@ -2,17 +2,7 @@ import { Server, Socket } from "socket.io";
 import { Session } from "next-auth";
 import getFormatedTime from "@/app/utils/getFormatTime";
 import { Server as HttpServer } from "http";
-
-export interface MessageType {
-  id: string;
-  time: string;
-  type: "broadcast" | "notifi" | "self";
-  content: string | number;
-  user?: {
-    name?: string | null;
-    avatar?: string;
-  };
-}
+import { MessageType } from "@/types/Message";
 
 interface SocketData {
   roomname: string;

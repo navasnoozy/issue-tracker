@@ -3,31 +3,20 @@
 import getSocket from "@/lib/socket";
 import { Avatar, Box, Flex, Text } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
+import { useChatContext } from "./chatContext/ChatContextProvider";
+import { MessageType } from "@/types/Message";
 
 interface Props {
   isConnected: boolean;
 }
 
-export interface MessageType {
-  id: string;
-  time: string;
-  type: "broadcast" | "notifi" | "self";
-  content: string | number;
-  user?: {
-    name?: string;
-    avatar?: string;
-  };
-}
-
 const Messages = () => {
-  const [messages, setMessages] = useState<MessageType[]>([]);
-
+  const {messages, setMessages}= useChatContext()
   useEffect(() => {
-
     const socket = getSocket();
 
     const handleRoomMessage = (message: MessageType) => {
-      setMessages((prev) => [...prev, message]);
+      setMessages((prev)=> [...prev,message]);
     };
 
     socket?.on("roomMessage", handleRoomMessage);
@@ -66,7 +55,7 @@ const Messages = () => {
                     {msg.time}
                   </Text>
                 </Flex>
-                <Text >{msg.content}</Text>
+                <Text>{msg.content}</Text>
               </>
             )}
           </Box>

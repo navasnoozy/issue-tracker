@@ -5,13 +5,26 @@ import { useChatContext } from "../components/chatContext/ChatContextProvider";
 import ChatRooms from "../components/ChatRooms";
 import CreateRoomForm from "../components/CreateRoomForm";
 import Messages from "../components/Messages";
+import { useEffect, useRef } from "react";
 
 const Chatbody = () => {
-  const { showCreateRoom, activeRoom } = useChatContext();
+  const { messages, showCreateRoom, activeRoom, scrollRef } = useChatContext();
+
+  useEffect(() => {
+    const scrollElement = scrollRef?.current;
+    if (scrollElement) {
+      scrollElement.scrollTop = scrollElement?.scrollHeight;
+    }
+  }, [messages]);
 
   return (
     <Flex direction="column" flexGrow="1" gap="2">
-      <ScrollArea type="auto" scrollbars="vertical" style={{ height: "60vh" }}>
+      <ScrollArea
+        ref={scrollRef}
+        type="auto"
+        scrollbars="vertical"
+        style={{ height: "60vh" }}
+      >
         <Flex
           style={{ background: "#FCFCFC" }}
           className="border border-purple-100 rounded-md"
