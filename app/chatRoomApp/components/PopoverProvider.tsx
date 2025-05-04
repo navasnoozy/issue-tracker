@@ -29,7 +29,6 @@ const PopoverProvider = ({ children }: { children: ReactNode }) => {
         console.log(`User ${socket.id} is connected`);
         initialize.current = false;
       });
-console.log('bropover worked');
 
       return () => {
         socket?.disconnect();

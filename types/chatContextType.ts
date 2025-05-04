@@ -6,6 +6,9 @@ export type Activeroom = {
   userCount: number | null;
 };
 
+// roomsList type
+export type RoomType = [string, number];
+
 //Context type
 export interface ChatContextType {
   showCreateRoom: boolean;
@@ -18,4 +21,6 @@ export interface ChatContextType {
   messages: MessageType[];
   setMessages: Dispatch<SetStateAction<MessageType[]>>;
   portalRef: RefObject<HTMLDivElement | null>
+  roomsList: RoomType[];
+  setRoomsList: Dispatch<SetStateAction<RoomType[]>>; 
 }

@@ -1,26 +1,15 @@
 //app/chatRoomApp/Interface/ChatNavbar.tsx
-
+'use client'
 import { Button, Card, Flex } from "@radix-ui/themes";
 import { AiOutlineHome } from "react-icons/ai";
 import { useChatContext } from "../components/chatContext/ChatContextProvider";
 import CloseButton from "../components/elements/CloseButton";
-import { useEffect } from "react";
-import getSocket from "@/lib/socket";
 
 const ChatNavbar = () => {
   const { showCreateRoom, setShowCreateRoom, activeRoom, setActiveRoom } = useChatContext();
   
 
-  useEffect(()=>{
-    const socket = getSocket();
-    socket?.on('roomUserCount', (count:number)=>{
-      setActiveRoom((prev)=> ({...prev, userCount:count}))
-    });
 
-    return ()=> {
-      socket?.off('roomUserCount')
-    }
-  },[])
 
   if (activeRoom.roomname)
     return (

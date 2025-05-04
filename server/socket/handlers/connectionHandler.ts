@@ -1,14 +1,12 @@
-import { Socket, Server } from "socket.io";
-import { handleUserLeaveRoom } from "./roomHandler";
-import { handleMessageSending } from "./messageHandler";
-import { handleRoomCreation } from "./roomHandler";
+import { Server, Socket } from "socket.io";
 import {
   chatRooms,
   PUBLIC_ROOM,
   removeFromChatRoomTracker,
   roomUsersCount,
 } from "../services/RoomService";
-import { Session } from "next-auth";
+import { handleMessageSending } from "./messageHandler";
+import { handleRoomCreation, handleUserLeaveRoom } from "./roomHandler";
 
 // Track active user sessions and their rooms
 

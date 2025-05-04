@@ -1,22 +1,17 @@
-"use client";
 import getSocket from "@/lib/socket";
-import { Box, Button, Card, Flex } from "@radix-ui/themes";
+import { Button, Card, Flex } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineHome } from "react-icons/ai";
+import { HiOutlineUsers } from "react-icons/hi";
 import { useChatContext } from "./chatContext/ChatContextProvider";
 import { Response } from "./CreateRoomForm";
-import { HiOutlineUsers } from "react-icons/hi";
-
-interface Props {
-  setCurrentRoom: React.Dispatch<React.SetStateAction<string>>;
-}
 
 const ChatRooms = () => {
   const { data: session } = useSession();
-  const { setActiveRoom, setShowCreateRoom } = useChatContext();
-  const [roomsList, setRoomsList] = useState([]);
+  const { setActiveRoom, setShowCreateRoom, roomsList, setRoomsList } =
+    useChatContext();
 
   const socket = getSocket();
 
@@ -33,14 +28,14 @@ const ChatRooms = () => {
   };
 
   useEffect(() => {
-    socket?.on("getRoomsList", (roomTable) => {
-      setRoomsList(roomTable);
-      console.log("roomlist", roomTable);
+    socket?.on("getRoomsList", (roomlistWithUsers: []) => {
+      setRoomsList(roomlistWithUsers);
     });
   }, []);
 
   return (
     <>
+      Chat rooms
       {roomsList.map((room: [string, number]) => {
         const [name, count] = room;
         return (

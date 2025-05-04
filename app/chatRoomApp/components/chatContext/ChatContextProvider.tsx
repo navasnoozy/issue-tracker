@@ -2,7 +2,7 @@
 "use client";
 import { createContext, ReactNode, useContext, useRef, useState } from "react";
 
-import { Activeroom, ChatContextType } from "@/types/chatContextType";
+import { Activeroom, ChatContextType, RoomType } from "@/types/chatContextType";
 import { MessageType } from "@/types/messageType";
 
 //create context
@@ -27,6 +27,7 @@ const ChatContextProvider = ({ children }: { children: ReactNode }) => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const portalRef = useRef(null);
+  const [roomsList, setRoomsList] = useState<RoomType[]>([]);
 
   const value: ChatContextType = {
     showCreateRoom,
@@ -38,7 +39,9 @@ const ChatContextProvider = ({ children }: { children: ReactNode }) => {
     scrollRef,
     messages,
     setMessages,
-    portalRef
+    portalRef,
+    roomsList, 
+    setRoomsList
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

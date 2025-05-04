@@ -1,9 +1,9 @@
+'use client'
 import getSocket from "@/lib/socket";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
-import { ReactNode, useRef } from "react";
+import { ReactNode } from "react";
 import { useChatContext } from "../chatContext/ChatContextProvider";
-import { VisuallyHidden } from "radix-ui";
 
 type CloseButtonProps = {
   children: ReactNode;
@@ -39,8 +39,7 @@ const CloseButton = ({ children }: CloseButtonProps) => {
   };
 
   return (
-  
-      <AlertDialog.Root>
+      <AlertDialog.Root >
         <AlertDialog.Trigger>
           <Button size="2" variant="outline" color="red">
             {children}
@@ -74,7 +73,6 @@ const CloseButton = ({ children }: CloseButtonProps) => {
           </Flex>
         </AlertDialog.Content>
       </AlertDialog.Root>
-
   );
 };
 
