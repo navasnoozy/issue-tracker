@@ -218,6 +218,30 @@ async function Main({searchParams}:Props) {
     await prisma.user.createMany({
       data: [
         {
+          name: "tester one",
+          email: "tester1@gmail.com",
+          password:"$2a$10$UrJgHA296OgS7GYffdgyMul2j3mvSZst6Zu6qUwWNWjrVU5Tfu2fa",
+          emailVerified:new Date(),
+        },
+        {
+          name: "tester two",
+          email: "tester2@gmail.com",
+          password:"$2a$10$UrJgHA296OgS7GYffdgyMul2j3mvSZst6Zu6qUwWNWjrVU5Tfu2fa",
+          emailVerified:new Date(),
+        },
+        {
+          name: "tester three",
+          email: "tester3@gmail.com",
+          password:"$2a$10$UrJgHA296OgS7GYffdgyMul2j3mvSZst6Zu6qUwWNWjrVU5Tfu2fa",
+          emailVerified:new Date(),
+        },
+        {
+          name: "tester Four",
+          email: "tester4@gmail.com",
+          password:"$2a$10$UrJgHA296OgS7GYffdgyMul2j3mvSZst6Zu6qUwWNWjrVU5Tfu2fa",
+          emailVerified:new Date(),
+        },
+        {
           name: "Alice Johnson",
           email: "alice.johnson@example.com",
         },
