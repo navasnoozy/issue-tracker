@@ -27,7 +27,7 @@ const ChatContextProvider = ({ children }: { children: ReactNode }) => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const portalRef = useRef(null);
-  const [roomsList, setRoomsList] = useState<RoomType[]>([]);
+  const [roomsList, setRoomsList] = useState<Map<string,number>>(new Map());
 
   const value: ChatContextType = {
     showCreateRoom,

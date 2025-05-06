@@ -29,43 +29,40 @@ const ChatRooms = () => {
 
   useEffect(() => {
     socket?.on("getRoomsList", (roomlistWithUsers: []) => {
-      setRoomsList(roomlistWithUsers);
+      const roomMap = new Map<string, number>(roomlistWithUsers);
+      setRoomsList(roomMap);
     });
   }, []);
 
   return (
     <>
-      Chat rooms
-      {roomsList.map((room: [string, number]) => {
-        const [name, count] = room;
-        return (
-          <Card
-            key={name}
-            className="!flex !justify-between !items-center !text-gray-500 !gap-2"
+      {Array.from(roomsList.entries()).map(([roomname, userCount]) => (
+        <Card
+          key={roomname}
+          className="!flex !justify-between !items-center !text-gray-500 !gap-2"
+        >
+          <Flex
+            width={"130px"}
+            wrap={"nowrap"}
+            className="!items-center !gap-2"
           >
-            <Flex
-              width={"130px"}
-              wrap={"nowrap"}
-              className="!items-center !gap-2"
-            >
-              <AiOutlineHome />
-              {name}
-            </Flex>
-            <Flex className="!justify-between !items-center !gap-2">
-              <HiOutlineUsers />
-              {count}
-            </Flex>
+            <AiOutlineHome />
+            {roomname}
+          </Flex>
+          <Flex className="!justify-between !items-center !gap-2">
+            <HiOutlineUsers />
+            {userCount}
+          </Flex>
 
-            <Button
-              size="2"
-              variant="soft"
-              onClick={() => handleClick(name, count)}
-            >
-              Join
-            </Button>
-          </Card>
-        );
-      })}
+          <Button
+            size="2"
+            variant="soft"
+            onClick={() => handleClick(roomname, userCount)}
+          >
+            Join
+          </Button>
+        </Card>
+      ))}
     </>
   );
 };

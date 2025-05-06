@@ -21,6 +21,6 @@ export interface ChatContextType {
   messages: MessageType[];
   setMessages: Dispatch<SetStateAction<MessageType[]>>;
   portalRef: RefObject<HTMLDivElement | null>
-  roomsList: RoomType[];
-  setRoomsList: Dispatch<SetStateAction<RoomType[]>>; 
+  roomsList: Map<string,number>
+  setRoomsList: Dispatch<SetStateAction<Map<string,number>>>
 }

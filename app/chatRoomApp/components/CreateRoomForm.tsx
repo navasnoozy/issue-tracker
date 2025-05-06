@@ -1,12 +1,13 @@
 //app/chatroomapp/components/CreateRoomForm.tsx file
 "use client";
 import getSocket from "@/lib/socket";
-import { Button, Flex, TextField } from "@radix-ui/themes";
+import { Box, Button, Flex, TextField } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useChatContext } from "./chatContext/ChatContextProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import ErrorMessage from "@/app/components/ErrorMessage";
 
 export type Response = {
   success: boolean;
@@ -17,10 +18,17 @@ const CreateRoomForm = () => {
   const { register, handleSubmit,setFocus } = useForm();
   const { data: session } = useSession();
   const { setActiveRoom, setShowCreateRoom, roomsList } = useChatContext();
+  const [error, setError] = useState('')
 
 const socket = getSocket();
 
   const submit = handleSubmit(({ roomname }) => {
+
+    if(roomsList.has(roomname)){
+      setError("Room name already exists.");
+      return
+    }
+
     socket?.emit("createRoom", { roomname, session }, (res: Response) => {
       if (res.success) {
         toast.success(res.statusText);
@@ -45,7 +53,9 @@ const socket = getSocket();
           placeholder="Enter room name"
         />
         <Button type="submit">Create and Join</Button>
+        <Flex justify={'center'} align={'center'}><ErrorMessage>{error}</ErrorMessage></Flex>
       </Flex>
+     
     </form>
   );
 };
