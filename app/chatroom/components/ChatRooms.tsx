@@ -1,7 +1,7 @@
 import getSocket from "@/lib/socket";
 import { Button, Card, Flex } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineHome } from "react-icons/ai";
 import { HiOutlineUsers } from "react-icons/hi";
@@ -27,6 +27,7 @@ const ChatRooms = () => {
     });
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     socket?.on("getRoomsList", (roomlistWithUsers: []) => {
       const roomMap = new Map<string, number>(roomlistWithUsers);

@@ -1,11 +1,11 @@
 //app/chatroomapp/interface/chatbody.tsx
 "use client";
 import { Flex, ScrollArea } from "@radix-ui/themes";
+import { useEffect } from "react";
 import { useChatContext } from "../components/chatContext/ChatContextProvider";
 import ChatRooms from "../components/ChatRooms";
 import CreateRoomForm from "../components/CreateRoomForm";
 import Messages from "../components/Messages";
-import { useEffect, useRef } from "react";
 
 const Chatbody = () => {
   const { messages, showCreateRoom, activeRoom, scrollRef, portalRef } = useChatContext();
@@ -15,7 +15,7 @@ const Chatbody = () => {
     if (scrollElement) {
       scrollElement.scrollTop = scrollElement?.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, scrollRef]);
 
   return (
     <Flex direction="column" flexGrow="1" gap="2">

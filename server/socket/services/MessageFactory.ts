@@ -1,6 +1,6 @@
 import { Session } from "next-auth";
-import { MessageType } from "@/types/messageType";
-import getFormatedTime from "@/utils/getFormatTime";
+import { MessageType } from "../../../server/types/messageType";
+import getFormatedTime from "../../../app/utils/getFormatTime"
 
 export class MessageFactory {
   static create(

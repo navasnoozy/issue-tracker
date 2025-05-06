@@ -1,13 +1,12 @@
-//app/chatRoomApp/chatApp.tsx
 "use client";
-
 import ChatContextProvider from "./components/chatContext/ChatContextProvider";
 import PopoverProvider from "./components/PopoverProvider";
 import ChatFooter from "./Interface/ChatFooter";
 import Chatbody from "./Interface/ChatBody";
 import ChatNavbar from "./Interface/ChatNavbar";
+import { Metadata } from "next";
 
-const ChatApp = () => {
+const ChatContainer = () => {
   return (
     <ChatContextProvider>
       <PopoverProvider>
@@ -19,4 +18,10 @@ const ChatApp = () => {
   );
 };
 
-export default ChatApp;
+
+export const metadata: Metadata = {
+  title: "Issue Tracker - ChatRooms",
+  description: "charooms",
+};
+
+export default ChatContainer;

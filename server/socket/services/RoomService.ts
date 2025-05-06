@@ -1,5 +1,5 @@
-import { SocketData } from "@/types/socket.types";
-import { Server,Socket } from "socket.io";
+import { SocketData } from "@/server/types/socket.types";
+import { Server, Socket } from "socket.io";
 import { MessageFactory } from "./MessageFactory";
 
 // Initialize public room
@@ -31,13 +31,12 @@ export function addToChatRoomTracker(
 
 // Delete and update Chatroom list and table
 export function removeFromChatRoomTracker(
-  {roomname, session}: SocketData,
+  { roomname, session }: SocketData,
   io?: Server,
   socket?: Socket
 ) {
   const userEmail = session?.user?.email;
   const username = session?.user?.name;
-
 
   socket?.leave(roomname);
 

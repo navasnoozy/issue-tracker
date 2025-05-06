@@ -1,24 +1,20 @@
 //app/chatApp/Message.tsx file
 "use client";
 import getSocket from "@/lib/socket";
+import { MessageType } from "@/server/types/messageType";
 import { Avatar, Box, Flex, Text } from "@radix-ui/themes";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useChatContext } from "./chatContext/ChatContextProvider";
-import { MessageType } from "@/types/messageType";
-
-interface Props {
-  isConnected: boolean;
-}
 
 const Messages = () => {
   const { messages, setMessages } = useChatContext();
+
+  const handleRoomMessage = (message: MessageType) => {
+    setMessages((prev) => [...prev, message]);
+  };
+
   useEffect(() => {
     const socket = getSocket();
-
-    const handleRoomMessage = (message: MessageType) => {
-      setMessages((prev) => [...prev, message]);
-    };
-
     socket?.on("roomMessage", handleRoomMessage);
 
     return () => {
@@ -81,30 +77,3 @@ const style = {
     className: "text-sm text-gray-500",
   },
 };
-
-const dummyMessages: MessageType[] = [
-  {
-    id: crypto.randomUUID(),
-    time: "12:00 pm",
-    type: "broadcast",
-    content: "hi",
-    user: {
-      name: "navas",
-    },
-  },
-  {
-    id: crypto.randomUUID(),
-    time: "12:00 pm",
-    type: "self",
-    content: "poda",
-    user: {
-      name: "ghadhar",
-    },
-  },
-  {
-    id: crypto.randomUUID(),
-    time: "12:00 pm",
-    type: "notifi",
-    content: "john joined",
-  },
-];

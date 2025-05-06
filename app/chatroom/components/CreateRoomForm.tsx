@@ -1,13 +1,13 @@
 //app/chatroomapp/components/CreateRoomForm.tsx file
 "use client";
+import ErrorMessage from "@/app/components/ErrorMessage";
 import getSocket from "@/lib/socket";
-import { Box, Button, Flex, TextField } from "@radix-ui/themes";
+import { Button, Flex, TextField } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useChatContext } from "./chatContext/ChatContextProvider";
-import { useEffect, useState } from "react";
-import ErrorMessage from "@/app/components/ErrorMessage";
 
 export type Response = {
   success: boolean;
@@ -40,7 +40,7 @@ const socket = getSocket();
     });
   });
   
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect (()=>{
     setFocus('roomname')
   },[])

@@ -15,16 +15,13 @@ const PopoverProvider = ({ children }: { children: ReactNode }) => {
   const { isOpen, setIsOpen ,activeRoom } = useChatContext();
   
 
-    // prevent Radix auto-dismiss
-    const blockDismiss = (e: Event) => e.preventDefault();
-
   const handleTongle = () => {
     setIsOpen(true);
   };
 
   useEffect(() => {
     if (isOpen) {
-      let socket = getSocket(initialize.current);
+      const socket = getSocket(initialize.current);
       socket?.on("connect", () => {
         console.log(`User ${socket.id} is connected`);
         initialize.current = false;

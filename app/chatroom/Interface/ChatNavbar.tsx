@@ -6,7 +6,7 @@ import { useChatContext } from "../components/chatContext/ChatContextProvider";
 import CloseButton from "../components/elements/CloseButton";
 
 const ChatNavbar = () => {
-  const { showCreateRoom, setShowCreateRoom, activeRoom, setActiveRoom } = useChatContext();
+  const { showCreateRoom, setShowCreateRoom, activeRoom } = useChatContext();
   
 
 

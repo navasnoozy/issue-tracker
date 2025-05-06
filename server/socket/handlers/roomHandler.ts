@@ -7,7 +7,7 @@ import {
   roomUsersCount,
   removeFromChatRoomTracker,
 } from "../services/RoomService";
-import { SocketData } from "@/types/socket.types";
+import { SocketData } from "@/server/types/socket.types";
 
 // HANDLE ROOM CREATION or JOINING ROOM EVENTS
 export function handleRoomCreation(socket: Socket, io: Server) {

@@ -32,7 +32,7 @@
     "app/api/users/emailVerification",
     "server/socket.js",
     "server/server.ts",
-    "app/chatroomapp/ChatContainer.tsx"
+    "app/chatroom/ChatContainer.tsx"
   ],
   "exclude": ["node_modules"]
 }

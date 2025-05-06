@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 import { MessageFactory } from "../services/MessageFactory";
-import { SocketData } from "@/types/socket.types";
+import { SocketData } from "@/server/types/socket.types";
 
 // HANDLE MESSAGE SENDING EVENTS
 export function handleMessageSending(socket: Socket) {

@@ -1,5 +1,5 @@
 'use client';
-import { Flex } from '@radix-ui/themes';
+import { Box, Flex } from '@radix-ui/themes';
 import LogoIcon from './Logoicon';
 import NavLinks from './NavLinks';
 import UserProfile from './UserProfile';
@@ -7,6 +7,7 @@ import MobileMenu from './MobileMenu';
 
 const NavBar = () => {
   return (
+    <Box style={{marginLeft:'12px', marginRight:"12px", marginTop:'10px'}}>
     <Flex
       justify="between"
       className="w-full border rounded-full border-gray-200 shadow-2xs px-6 h-14"
@@ -24,6 +25,7 @@ const NavBar = () => {
         <UserProfile />
       </Flex>
     </Flex>
+    </Box>
   );
 };
 
