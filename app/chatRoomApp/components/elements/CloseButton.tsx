@@ -10,7 +10,7 @@ type CloseButtonProps = {
 };
 
 const CloseButton = ({ children }: CloseButtonProps) => {
-  const { activeRoom, setActiveRoom, setShowCreateRoom, setIsOpen, portalRef } =
+  const { activeRoom, setActiveRoom,setMessages, setShowCreateRoom, setIsOpen, portalRef } =
     useChatContext();
   const { data: session } = useSession();
 
@@ -32,6 +32,7 @@ const CloseButton = ({ children }: CloseButtonProps) => {
       });
       setActiveRoom({ roomname: null, userCount: null });
       setShowCreateRoom(false);
+      setMessages([])
     } else {
       // Handle closing the chat window
       setIsOpen(false);

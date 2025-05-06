@@ -39,11 +39,11 @@ export function handleConnection(socket: Socket, io: Server) {
    */
   socket.on("disconnect", (reason) => {
     console.log(`User ${socket.id} disconnected: ${reason}`);
-     const userEmail = socket.data.userEmail;
+     const session = socket.data.session
      const roomname = socket.data.roomname
 
      //only call if user joined any room
-    if (roomname) removeFromChatRoomTracker(roomname, userEmail,io);
+    if (roomname) removeFromChatRoomTracker({roomname, session},io, socket);
     
   });
 }

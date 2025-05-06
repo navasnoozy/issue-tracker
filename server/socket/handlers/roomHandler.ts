@@ -25,7 +25,7 @@ export function handleRoomCreation(socket: Socket, io: Server) {
     const username = session.user?.name || "User";
 
     //saving user data from unexpected disconnection
-    socket.data.userEmail = session.user?.email
+    socket.data.session = session
     socket.data.roomname = roomname
 
     addToChatRoomTracker(roomname, session.user?.email || "anonymous", io);
@@ -55,14 +55,11 @@ export function handleUserLeaveRoom(socket: Socket, io: Server) {
   return ({ roomname, session }: SocketData) => {
     if (!roomname || !session) return;
 
-    const userEmail = session.user?.email;
     const username = session?.user?.name || "User";
 
-    // Only call socket.leave if not already disconnecting
 
-    socket.leave(roomname);
 
-    removeFromChatRoomTracker(roomname, userEmail, io);
+    removeFromChatRoomTracker({roomname, session}, io, socket);
 
     // NOTIFY OTHERS THAT USER LEFT
     const leftNotification = MessageFactory.create(

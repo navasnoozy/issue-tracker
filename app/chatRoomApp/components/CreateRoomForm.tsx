@@ -16,7 +16,7 @@ export type Response = {
 const CreateRoomForm = () => {
   const { register, handleSubmit,setFocus } = useForm();
   const { data: session } = useSession();
-  const { setActiveRoom, setShowCreateRoom } = useChatContext();
+  const { setActiveRoom, setShowCreateRoom, roomsList } = useChatContext();
 
 const socket = getSocket();
 
