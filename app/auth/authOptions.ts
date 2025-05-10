@@ -1,15 +1,15 @@
 //authOptions.ts file
-import prisma from '@/lib/prisma'
+import prisma from "@/lib/prisma";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from 'bcrypt';
-import { PrismaClient } from '@prisma/client';
+import bcrypt from "bcrypt";
+import { PrismaClient } from "@prisma/client";
 
 const authOptions: AuthOptions = {
-  adapter: PrismaAdapter(prisma as PrismaClient), 
+  adapter: PrismaAdapter(prisma as PrismaClient),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -29,7 +29,6 @@ const authOptions: AuthOptions = {
         if (!credentials?.email || !credentials.password) {
           throw new Error("Missing email or password");
         }
-        
 
         const user = await prisma.user.findUnique({
           where: {
@@ -37,60 +36,73 @@ const authOptions: AuthOptions = {
           },
         });
 
-        if (!user || !user.password){
-          throw new Error ('Email id not regiestered')
+        if (!user || !user.password) {
+          throw new Error("Email id not regiestered");
         }
 
-        const passwordMatch = await bcrypt.compare(credentials.password,user.password);
+        const passwordMatch = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
 
-        if (!passwordMatch) throw new Error ('Invalid Email id or password');
+        if (!passwordMatch) throw new Error("Invalid Email id or password");
 
-        if (!user.emailVerified) throw new Error ('Email id not verified')
+        if (!user.emailVerified) throw new Error("Email id not verified");
 
-        return user
-
+        return user;
       },
     }),
   ],
   session: {
     strategy: "jwt",
   },
-  pages:{
-      signIn:'/auth'
+  pages: {
+    signIn: "/auth",
   },
   callbacks: {
-    async signIn() {
-      return true; // Always allow sign in to proceed
-    },
-
-    // Use the session callback instead, which runs after the user is created
-    async session({ session}) {
-      if (session?.user?.email) {
-        // Check if this is a Google or GitHub user and update emailVerified
-        const user = await prisma.user.findUnique({
-          where: { email: session.user.email },
-          select: {
-            emailVerified: true,
-            id: true,
-            accounts: { select: { provider: true } },
-          },
+    async signIn({ user, account }) {
+      if (account?.provider === "google" || account?.provider === "github") {
+        const existingUser = await prisma.user.findUnique({
+          where: { email: user.email! },
+          include: { accounts: true },
         });
 
-        if (
-          user &&
-          !user.emailVerified &&
-          user.accounts?.some((acc) =>
-            ["google", "github"].includes(acc.provider)
-          )
-        ) {
+        if (existingUser) {
+          // User exists with credentials - update their profile
           await prisma.user.update({
-            where: { id: user.id },
-            data: { emailVerified: new Date() },
+            where: { id: existingUser.id },
+            data: {
+              isSocialLogin: true,
+              emailVerified: new Date(),
+            },
           });
+
+          // Check if they already have this provider connected
+          const hasProvider = existingUser.accounts.some(
+            (acc) => acc.provider === account.provider
+          );
+
+          if (!hasProvider) {
+            // Create the account connection manually since the adapter isn't doing it
+            await prisma.account.create({
+              data: {
+                userId: existingUser.id,
+                type: account.type,
+                provider: account.provider,
+                providerAccountId: account.providerAccountId,
+              },
+            });
+          }
+
+          // Use the existingUser instead of the incoming user
+          user.id = existingUser.id;
+          return true;
         }
       }
-      return session;
+      return true;
     },
+
+    // Keep your existing session callback
   },
 };
 
